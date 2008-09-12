@@ -31,14 +31,68 @@ This file is part of the EPBP project
 */
 
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <stdint.h>
 using namespace std;
+
+
+uint8_t *opcode_data;
+
+
+
+
+
+void LoadFile(){
+	ifstream inf;
+	inf.open("bin/test_op.ebc");
+	cout << "Loading File" << endl;
+	uint32_t i=0;
+	while(inf.good()==1){
+		opcode_data[i]=(int)inf.get();
+		cout <<hex<< (int)opcode_data[i] << endl;
+		i++;
+		
+	}
+	
+}
+	
+
+
+
 
 
 
 int main(void){
+	opcode_data=new uint8_t[(128*1024)]; //128k for opcode storage
+	LoadFile();
 	cout << "hi there" << endl;
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

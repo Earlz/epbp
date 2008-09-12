@@ -30,6 +30,22 @@
 ;</Copyright Header>
 ;*/
 
+;;Macros;;
+
+%macro mov_r32_i32 2
+	db 0x10
+	db %1
+	dd %2
+%endmacro
+
+
+
+start:
+org 0
+
+;start code
+mov_r32_i32 12,0xFF0000FF
+
 
 
 

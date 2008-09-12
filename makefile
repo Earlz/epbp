@@ -30,7 +30,7 @@
 
 
 
-_OBJS=objs/main.o
+_OBJS=objs/main.o objs/opcodes.o objs/bcve.o
 debug_CPPFLAGS=-Wall -pedantic -g -fexceptions -I./include
 
 
@@ -40,6 +40,8 @@ default:
 #build the library
 	yasm -o bin/test_op.ebc src/test_op.asm
 	g++ $(debug_CPPFLAGS) -c src/main.cpp -o objs/main.o
+	g++ $(debug_CPPFLAGS) -c src/bcve.cpp -o objs/bcve.o
+	g++ $(debug_CPPFLAGS) -c src/opcodes.cpp -o objs/opcodes.o
 	g++ $(debug_CPPFLAGS) -o bin/epbp $(_OBJS)
 
 
