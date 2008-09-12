@@ -31,26 +31,7 @@ This file is part of the EPBP project
 */
 
 
-
-#ifndef EPBP_H
-#define EPBP_H
-
-
-
-class VirtualMachine{
-	
-	
-	public:
-	
-	uint32_t ReadDword(uint32_t loc); //memory functions
-	uint16_t ReadWord(uint32_t loc);
-	uint16_t ReadByte(uint8_t loc);
-	
-	volatile uint32_t *r[]; //registers, this could change?
-	
-	void SetRegisterBank(uint32_t loc); //This must be aligned on 256 byte bound
-	
-}
+//Byte Code Virtual Environment
 
 
 
@@ -69,15 +50,6 @@ class VirtualMachine{
 
 
 
-
-
-
-
-
-
-
-
-#endif
 
 
 
