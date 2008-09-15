@@ -34,13 +34,26 @@ This file is part of the EPBP project
 #include <fstream>
 #include <string>
 #include <stdint.h>
+#include <epbp.h>
 using namespace std;
 
 
 uint8_t *opcode_data;
 
 
-
+void exception(uint32_t code){
+	switch(code){
+		case MEMORY_FAULT:
+			cout << "Exception: Code: MEMORY_FAULT"<< endl;
+			exit(1);
+		break;
+		default:
+			cout <<"Exception: Code: UNKNOWN"<<endl;
+			exit(2);
+		break;
+	}
+	
+}
 
 
 void LoadFile(){
