@@ -32,13 +32,17 @@ This file is part of the EPBP project
 
 
 //Opcode Parser
-#inlcude <epbp.h>
+#include <epbp.h>
 #include <stdlib.h>
+#include <string.h>
+
 
 
 OpcodeProcessor::OpcodeProcessor(void *opcode_data,uint32_t sz_data,uint32_t flags){
-	op_data=new uint8_t[sz_data];
-	memcpy((uint8_t*)opcode_data,op_data,sz_data);
+	op_data=(uint32_t*)new uint8_t[sz_data];
+	memcpy(opcode_data,op_data,sz_data);
+	cl=0;
+	tr=false;
 	
 	
 	
@@ -49,12 +53,16 @@ OpcodeProcessor::OpcodeProcessor(void *opcode_data,uint32_t sz_data,uint32_t fla
 
 OpcodeProcessor::~OpcodeProcessor(){
 	
-	
-	
+	delete []op_data;
 }
 
 
-
+void OpcodeProcessor::Cycle(){
+	
+	
+	
+	
+}
 
 
 

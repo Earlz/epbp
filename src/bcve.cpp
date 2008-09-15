@@ -32,13 +32,17 @@ This file is part of the EPBP project
 
 #include <epbp.h>
 
-VirtualMachine machine;
+
 
 
 
 
 //Byte Code Virtual Environment
+//This includes register class, memory class, and the xcall mechanism
 
+/**Decremented --hard to code around the virtual machine object. Solution-> split components
+	into individual objects.
+**
 VirtualMachine::VirtualMachine(){
 	memory=new uint8_t[0x10000];
 	size_memory=0x10000;
@@ -106,6 +110,8 @@ void VirtualMachine::SetRegisterBank(uint32_t loc){
 uint32_t VirtualMachine::GetRegisterBank(){
 	return regbank;
 }
+
+*/
 
 
 
