@@ -34,32 +34,63 @@ This file is part of the EPBP project
 
 #ifndef EPBP_H
 #define EPBP_H
+#include <stdint.h>
 
+static const uint32_t MEMORY_FAULT=1;
 
 
 class VirtualMachine{
-	
-	
+	uint8_t *memory;
+	uint32_t size_memory; //size of memory
+	uint32_t regbank;
 	public:
-	
+	VirtualMachine();
+	~VirtualMachine();
 	uint32_t ReadDword(uint32_t loc); //memory functions
 	uint16_t ReadWord(uint32_t loc);
-	uint16_t ReadByte(uint8_t loc);
+	uint8_t ReadByte(uint32_t loc);
+	void WriteDword(uint32_t loc,uint32_t d);
+	void WriteWord(uint32_t loc,uint16_t d);
+	void WriteByte(uint32_t loc,uint8_t d);
 	
-	volatile uint32_t *r[]; //registers, this could change?
 	
+	uint32_t r(uint8_t num){ //register
+		return (uint32_t)memory[regbank+num];
+	}
+	//void rb(uint8_t num,uint8_t d){
+	//	memory[regbank+num]=d;
+	//}
+	void rd(uint8_t num,uint32_t d){
+		*(uint32_t*)&memory[regbank+num]=d;
+	}
 	void SetRegisterBank(uint32_t loc); //This must be aligned on 256 byte bound
+	uint32_t GetRegisterBank();
 	
-}
+	
+};
 
 
 
+void exception(uint32_t);
 
+class Dump{
+	
+	
+};
 
-
-
-
-
+class OpcodeProcessor{
+	uint32_t op_cache;
+	uint32_t *op_data;
+	uint32_t cl; //current location
+	bool tr; //truth register
+	
+	public:
+	OpcodeProcessor(void *opcode_data,uint32_t sz_data,uint32_t flags);
+	~OpcodeProcessor();
+	void Cycle();
+	Dump DumpState();
+	void icall(uint32_t address); //equivalent of int, but much more elegant and sophisticated
+};
 
 
 

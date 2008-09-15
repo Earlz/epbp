@@ -30,26 +30,82 @@ This file is part of the EPBP project
 </Copyright Header>
 */
 
+#include <epbp.h>
+
+VirtualMachine machine;
+
+
+
 
 //Byte Code Virtual Environment
 
+VirtualMachine::VirtualMachine(){
+	memory=new uint8_t[0x10000];
+	size_memory=0x10000;
+	regbank=0;
+	
+	
+}
 
 
+VirtualMachine::~VirtualMachine(){
+	delete []memory;
+	
+}
 
 
+uint8_t VirtualMachine::ReadByte(uint32_t loc){
+	if(loc>size_memory){
+		exception(MEMORY_FAULT);
+	}
+	return memory[loc];
+}
+
+uint16_t VirtualMachine::ReadWord(uint32_t loc){
+	if(loc>(size_memory-1)){
+		exception(MEMORY_FAULT);
+	}
+	return (uint16_t)memory[loc];
+}
+
+uint32_t VirtualMachine::ReadDword(uint32_t loc){
+	if(loc>(size_memory-3)){
+		exception(MEMORY_FAULT);
+	}
+	return (uint32_t)memory[loc];
+}
 
 
+void VirtualMachine::WriteByte(uint32_t loc,uint8_t d){
+	if(loc>(size_memory)){
+		exception(MEMORY_FAULT);
+	}
+	memory[loc]=d;
+}
 
+void VirtualMachine::WriteWord(uint32_t loc,uint16_t d){
+	if(loc>(size_memory-1)){
+		exception(MEMORY_FAULT);
+	}
+	*(uint16_t*)&memory[loc]=d;
+}
+void VirtualMachine::WriteDword(uint32_t loc,uint32_t d){
+	if(loc>(size_memory-3)){
+		exception(MEMORY_FAULT);
+	}
+	*(uint32_t*)&memory[loc]=d;
+}
 
+void VirtualMachine::SetRegisterBank(uint32_t loc){
+	if(loc>(size_memory-(256*4)+1)){
+		exception(MEMORY_FAULT);
+	}
+	regbank=loc;
+}
 
-
-
-
-
-
-
-
-
+uint32_t VirtualMachine::GetRegisterBank(){
+	return regbank;
+}
 
 
 
