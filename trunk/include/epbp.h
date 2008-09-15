@@ -35,10 +35,11 @@ This file is part of the EPBP project
 #ifndef EPBP_H
 #define EPBP_H
 #include <stdint.h>
+#include <stdlib.h>
 
 static const uint32_t MEMORY_FAULT=1;
 
-
+/** See deprication note in bcve.cpp
 class VirtualMachine{
 	uint8_t *memory;
 	uint32_t size_memory; //size of memory
@@ -52,7 +53,7 @@ class VirtualMachine{
 	void WriteDword(uint32_t loc,uint32_t d);
 	void WriteWord(uint32_t loc,uint16_t d);
 	void WriteByte(uint32_t loc,uint8_t d);
-	
+	bool ValidAddressRange_rw(uint32_t loc_start,uint32_t loc_end);
 	
 	uint32_t r(uint8_t num){ //register
 		return (uint32_t)memory[regbank+num];
@@ -69,6 +70,75 @@ class VirtualMachine{
 	
 };
 
+**/
+
+
+class MemoryClass;
+class MemoryByte{
+	friend class MemoryClass;
+	MemoryClass *m;
+	void SetMemoryClass(MemoryClass *mem);
+	public:
+		MemoryByte();
+		uint8_t &operator[](uint32_t);
+		uint8_t operator[](uint32_t) const;
+};
+
+class MemoryWord{
+	friend class MemoryClass;
+	MemoryClass *m;
+	void SetMemoryClass(MemoryClass *mem);
+	public:
+		MemoryWord();
+		uint16_t &operator[](uint32_t);
+		uint16_t operator[](uint32_t) const;
+};
+
+class MemoryDword{
+	friend class MemoryClass;
+	MemoryClass *m;
+	void SetMemoryClass(MemoryClass *mem);
+	public:
+		MemoryDword();
+		uint32_t &operator[](uint32_t);
+		uint32_t operator[](uint32_t) const;
+};
+
+class MemoryClass{
+	uint8_t *memory;
+	uint32_t size_memory; //size of memory
+	public:
+	MemoryClass(uint32_t initial_size,void *initial_data=NULL,uint32_t data_size=0);
+	~MemoryClass();
+	bool ValidAddressRange_rw(uint32_t loc_start,uint32_t loc_end);
+	uint32_t AllocateMemory(uint32_t size);
+	bool FreeMemory(uint32_t loc);
+	friend class MemoryByte;
+	friend class MemoryWord;
+	friend class MemoryDword;
+	MemoryByte db;
+	MemoryWord dw;
+	MemoryDword dd;
+	//These genious little classes make it so in code I can easily do memory.db[0]=5; 
+	//to set just a byte and not a dword
+};
+
+
+	
+
+class RegisterClass{
+	uint32_t loc;
+	MemoryClass *mem;
+	
+	public:
+	RegisterClass(MemoryClass *memory);
+	~RegisterClass();
+	uint32_t &operator[] (uint8_t); //write to register(return modifyable value
+	uint32_t operator[] (uint8_t) const; //read from register
+	void SetBank(uint32_t loc);
+	uint32_t GetBank();
+};
+
 
 
 void exception(uint32_t);
@@ -83,6 +153,7 @@ class OpcodeProcessor{
 	uint32_t *op_data;
 	uint32_t cl; //current location
 	bool tr; //truth register
+	uint32_t sr; //Stack register
 	
 	public:
 	OpcodeProcessor(void *opcode_data,uint32_t sz_data,uint32_t flags);
