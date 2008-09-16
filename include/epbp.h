@@ -38,6 +38,9 @@ This file is part of the EPBP project
 #include <stdlib.h>
 
 static const uint32_t MEMORY_FAULT=1;
+static const uint32_t COMPILETIME_DATA_OVERFLOW=2;
+static const uint32_t NOT_IMPLEMENTED=3;
+static const uint32_t BAD_BANK_ALIGNMENT=4;
 
 /** See deprication note in bcve.cpp
 class VirtualMachine{
@@ -79,7 +82,7 @@ class MemoryByte{
 	MemoryClass *m;
 	void SetMemoryClass(MemoryClass *mem);
 	public:
-		MemoryByte();
+
 		uint8_t &operator[](uint32_t);
 		uint8_t operator[](uint32_t) const;
 };
@@ -89,7 +92,7 @@ class MemoryWord{
 	MemoryClass *m;
 	void SetMemoryClass(MemoryClass *mem);
 	public:
-		MemoryWord();
+
 		uint16_t &operator[](uint32_t);
 		uint16_t operator[](uint32_t) const;
 };
@@ -99,14 +102,16 @@ class MemoryDword{
 	MemoryClass *m;
 	void SetMemoryClass(MemoryClass *mem);
 	public:
-		MemoryDword();
+
 		uint32_t &operator[](uint32_t);
 		uint32_t operator[](uint32_t) const;
 };
 
+class RegisterClass;
+
 class MemoryClass{
 	uint8_t *memory;
-	uint32_t size_memory; //size of memory
+	uint32_t memory_size; //size of memory
 	public:
 	MemoryClass(uint32_t initial_size,void *initial_data=NULL,uint32_t data_size=0);
 	~MemoryClass();
@@ -116,6 +121,7 @@ class MemoryClass{
 	friend class MemoryByte;
 	friend class MemoryWord;
 	friend class MemoryDword;
+	friend class RegisterClass;
 	MemoryByte db;
 	MemoryWord dw;
 	MemoryDword dd;
@@ -124,16 +130,15 @@ class MemoryClass{
 };
 
 
-	
-
+//Conclusion: Registers are always fixed length. Writing just one byte clears the rest of the register
 class RegisterClass{
-	uint32_t loc;
+	uint32_t bank;
 	MemoryClass *mem;
 	
 	public:
 	RegisterClass(MemoryClass *memory);
 	~RegisterClass();
-	uint32_t &operator[] (uint8_t); //write to register(return modifyable value
+	uint32_t &operator[] (uint8_t); //write to register(return modifyable value)
 	uint32_t operator[] (uint8_t) const; //read from register
 	void SetBank(uint32_t loc);
 	uint32_t GetBank();

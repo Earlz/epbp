@@ -40,7 +40,7 @@ This file is part of the EPBP project
 
 OpcodeProcessor::OpcodeProcessor(void *opcode_data,uint32_t sz_data,uint32_t flags){
 	op_data=(uint32_t*)new uint8_t[sz_data];
-	memcpy(opcode_data,op_data,sz_data);
+	memcpy(op_data,opcode_data,sz_data);
 	cl=0;
 	tr=false;
 	

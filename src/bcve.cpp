@@ -31,7 +31,7 @@ This file is part of the EPBP project
 */
 
 #include <epbp.h>
-
+#include <string.h>
 
 
 
@@ -39,6 +39,142 @@ This file is part of the EPBP project
 
 //Byte Code Virtual Environment
 //This includes register class, memory class, and the xcall mechanism
+
+MemoryClass::MemoryClass(uint32_t isize,void * idata,uint32_t data_size){
+	if(data_size>isize){ //What to do if size of initial data is greater than memory size?
+		exception(COMPILETIME_DATA_OVERFLOW);
+	}
+	memory=new uint8_t[isize];
+	memcpy(memory,idata,data_size);
+	memory_size=isize;
+	db.SetMemoryClass(this);
+	dw.SetMemoryClass(this);
+	dd.SetMemoryClass(this);
+	
+}
+
+MemoryClass::~MemoryClass(){
+	delete []memory;
+}
+
+bool MemoryClass::ValidAddressRange_rw(uint32_t start,uint32_t end){
+	if(end>start){
+		if(end>memory_size){
+			return false;
+		}else{
+			return true;
+		}
+	}else{
+		if(start>memory_size){
+			return false;
+		}else{
+			return true;
+		}
+	}
+
+}
+
+uint32_t MemoryClass::AllocateMemory(uint32_t size){
+	exception(NOT_IMPLEMENTED);
+	return 0;
+	
+}
+
+bool MemoryClass::FreeMemory(uint32_t loc){
+	exception(NOT_IMPLEMENTED);
+	return 0;
+}
+
+uint8_t &MemoryByte::operator[](uint32_t loc){
+	if(loc>m->memory_size){
+		exception(MEMORY_FAULT);
+	}
+	return m->memory[loc];
+}
+
+uint8_t MemoryByte::operator[](uint32_t loc) const{
+	if(loc>m->memory_size){
+		exception(MEMORY_FAULT);
+	}
+	return m->memory[loc];
+}
+
+
+uint16_t &MemoryWord::operator[](uint32_t loc){
+	if(loc>(m->memory_size-1)){
+		exception(MEMORY_FAULT);
+	}
+	return (uint16_t&)m->memory[loc];
+}
+
+uint16_t MemoryWord::operator[](uint32_t loc) const{
+	if(loc>(m->memory_size-1)){
+		exception(MEMORY_FAULT);
+	}
+	return (uint16_t)m->memory[loc];
+}
+
+uint32_t &MemoryDword::operator[](uint32_t loc){
+	if(loc>(m->memory_size-3)){
+		exception(MEMORY_FAULT);
+	}
+	return (uint32_t&)m->memory[loc];
+}
+
+uint32_t MemoryDword::operator[](uint32_t loc) const{
+	if(loc>(m->memory_size-3)){
+		exception(MEMORY_FAULT);
+	}
+	return (uint32_t)m->memory[loc];
+}
+
+
+void MemoryByte::SetMemoryClass(MemoryClass *mem){
+	m=mem;
+}
+void MemoryWord::SetMemoryClass(MemoryClass *mem){
+	m=mem;
+}
+void MemoryDword::SetMemoryClass(MemoryClass *mem){
+	m=mem;
+}
+
+
+
+//RegisterClass
+
+RegisterClass::RegisterClass(MemoryClass *memory){
+	mem=memory;
+	SetBank(0);
+}
+
+RegisterClass::~RegisterClass(){
+	
+}
+/*No validity of memory needs to be checked cause this is done automatically*/
+uint32_t &RegisterClass::operator[](uint8_t n){
+	return (uint32_t&)mem->memory[bank+n*4];
+}
+
+uint32_t RegisterClass::operator[](uint8_t n) const{
+	return (uint32_t)mem->memory[bank+n*4];
+}
+
+void RegisterClass::SetBank(uint32_t loc){
+	if((loc&3)!=0){
+		exception(BAD_BANK_ALIGNMENT);
+	}
+	if(mem->ValidAddressRange_rw(loc,loc+(256*4))==false){
+		exception(MEMORY_FAULT);
+	}
+	bank=loc;
+}
+
+uint32_t RegisterClass::GetBank(){
+	return bank;
+}
+
+
 
 /**Decremented --hard to code around the virtual machine object. Solution-> split components
 	into individual objects.
