@@ -78,10 +78,19 @@ RegisterClass r(&mem);
 
 void bcve_test(uint32_t num){
 	uint32_t i;
+	cout << "Test Number "<<num << endl;
+	cout <<"BEGIN TESTING OUTPUT" << endl;
+	cout <<"--------------------" << endl;
 	switch(num){
 		case 0:
 			/**Proves that the db and dw conventions effectively bind 
 			data to there specified types.**/
+			/**Expected Output:
+			Hello There Mr. Worldg
+			aello There Mr. Worldg
+			aallo There Mr. Worldg
+			aaaao There Mr. Worldg
+			**/
 			for(i=0;i<32;i++){
 				cout << mem.db[i];
 			}
@@ -105,6 +114,9 @@ void bcve_test(uint32_t num){
 		
 		case 1:
 			/**Proves that registers and register banks write properly*/
+			/**Expected Output:
+			aaaaddddccccMr. Worldg
+			**/
 			r[0]='aaaa';
 			r[1]='bbbb';
 			r[2]='cccc';
@@ -120,6 +132,9 @@ void bcve_test(uint32_t num){
 		break;
 	}
 	
+	cout << "------------------" << endl;
+	cout << "END TESTING OUTPUT" << endl;
+	
 }
 
 
@@ -127,10 +142,13 @@ void bcve_test(uint32_t num){
 
 
 int main(void){
+	int i;
 	opcode_data=new uint8_t[(128*1024)]; //128k for opcode storage
 	LoadFile();
 	cout << "hi there" << endl;
-	bcve_test(1);
+	for(i=0;i<=1;i++){
+		bcve_test(i);
+	}
 	return 0;
 }
 
