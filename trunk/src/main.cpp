@@ -70,7 +70,57 @@ void LoadFile(){
 	
 }
 	
+char *str="Hello There Mr. Worldgdb.";
 
+MemoryClass mem(0x10000,str,22);
+RegisterClass r(&mem);
+
+
+void bcve_test(uint32_t num){
+	uint32_t i;
+	switch(num){
+		case 0:
+			/**Proves that the db and dw conventions effectively bind 
+			data to there specified types.**/
+			for(i=0;i<32;i++){
+				cout << mem.db[i];
+			}
+			cout << endl;
+			mem.db[0]='a';
+			for(i=0;i<32;i++){
+				cout << mem.db[i];
+			}
+			cout << endl;
+			mem.dw[0]='aa';
+			for(i=0;i<32;i++){
+				cout << mem.db[i];
+			}
+			cout << endl;
+			mem.dd[0]='aaaa';
+			for(i=0;i<32;i++){
+				cout << mem.db[i];
+			}
+			cout << endl;
+		break;
+		
+		case 1:
+			/**Proves that registers and register banks write properly*/
+			r[0]='aaaa';
+			r[1]='bbbb';
+			r[2]='cccc';
+			r.SetBank(4);
+			r[0]='dddd';
+			for(i=0;i<32;i++){
+				cout << mem.db[i];
+			}
+			cout << endl;
+			break;
+		default:
+			cout <<"invalid test "<< endl;
+		break;
+	}
+	
+}
 
 
 
@@ -80,6 +130,7 @@ int main(void){
 	opcode_data=new uint8_t[(128*1024)]; //128k for opcode storage
 	LoadFile();
 	cout << "hi there" << endl;
+	bcve_test(1);
 	return 0;
 }
 
