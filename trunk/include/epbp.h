@@ -37,10 +37,16 @@ This file is part of the EPBP project
 #include <stdint.h>
 #include <stdlib.h>
 
+//config
+static const uint32_t CALLSTACK_SIZE=512;
+
+
 static const uint32_t MEMORY_FAULT=1;
 static const uint32_t COMPILETIME_DATA_OVERFLOW=2;
 static const uint32_t NOT_IMPLEMENTED=3;
 static const uint32_t BAD_BANK_ALIGNMENT=4;
+static const uint32_t CALLSTACK_OVERFLOW=5;
+static const uint32_t CALLSTACK_UNDERFLOW=6;
 
 /** See deprication note in bcve.cpp
 class VirtualMachine{
@@ -159,7 +165,14 @@ class OpcodeProcessor{
 	uint32_t cl; //current location
 	bool tr; //truth register
 	uint32_t sr; //Stack register
-	
+	uint16_t sr_size; //stack size
+	uint32_t rx[4]; //Xcall register.
+	uint32_t *cs; //The Call Stack.
+	uint32_t csl; //location inside the call stack.
+	protected:
+	void PushCS(uint32_t code);
+	uint32_t PopCS();
+	uint32_t PeekCS();
 	public:
 	OpcodeProcessor(void *opcode_data,uint32_t sz_data,uint32_t flags);
 	~OpcodeProcessor();
