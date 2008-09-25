@@ -43,6 +43,14 @@ OpcodeProcessor::OpcodeProcessor(void *opcode_data,uint32_t sz_data,uint32_t fla
 	memcpy(op_data,opcode_data,sz_data);
 	cl=0;
 	tr=false;
+	sr=0x1000;
+	sr_size=0xFFF; //4k
+	rx[0]=0;
+	rx[1]=0;
+	rx[2]=0;
+	rx[3]=0;
+	cs=new uint32_t[CALLSTACK_SIZE];
+	csl=0;
 	
 	
 	
@@ -64,6 +72,29 @@ void OpcodeProcessor::Cycle(){
 	
 }
 
+
+void OpcodeProcessor::PushCS(uint32_t code){
+	if(csl>=CALLSTACK_SIZE){
+		exception(CALLSTACK_OVERFLOW);
+	}
+	cs[csl]=code;
+	csl++;
+}
+
+uint32_t OpcodeProcessor::PopCS(){
+	if(csl==0){
+		exception(CALLSTACK_UNDERFLOW);
+	}
+	csl--;
+	return cs[csl]; //decrement csl first then return the value.
+}
+
+uint32_t OpcodeProcessor::PeekCS(){
+	if(csl==0){
+		exception(CALLSTACK_UNDERFLOW);
+	}
+	return cs[(csl-1)];
+}
 
 
 
