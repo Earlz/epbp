@@ -41,7 +41,7 @@ using namespace std;
 uint8_t *opcode_data;
 
 
-void exception(uint32_t code){
+void EpbpException(uint32_t code){
 	switch(code){
 		case MEMORY_FAULT:
 			cout << "Exception: Code: MEMORY_FAULT"<< endl;
@@ -56,17 +56,19 @@ void exception(uint32_t code){
 }
 
 
-void LoadFile(){
+void *LoadFile(){
 	ifstream inf;
+	uint8_t *tmp=new uint8_t[(128*1024)]; //128k
 	inf.open("bin/test_op.ebc");
 	cout << "Loading File" << endl;
 	uint32_t i=0;
 	while(inf.good()==1){
-		opcode_data[i]=(int)inf.get();
-		cout <<hex<< (int)opcode_data[i] << endl;
+		tmp[i]=(int)inf.get();
+		cout <<hex<< (int)tmp[i] << endl;
 		i++;
 		
 	}
+	return tmp;
 	
 }
 	
@@ -74,6 +76,8 @@ char *str="Hello There Mr. Worldgdb.";
 
 MemoryClass mem(0x10000,str,22);
 RegisterClass r(&mem);
+OpcodeProcessor cpu(LoadFile());
+
 
 
 void bcve_test(uint32_t num){
@@ -143,12 +147,14 @@ void bcve_test(uint32_t num){
 
 int main(void){
 	int i;
-	opcode_data=new uint8_t[(128*1024)]; //128k for opcode storage
 	LoadFile();
 	cout << "hi there" << endl;
 	for(i=0;i<=1;i++){
 		bcve_test(i);
 	}
+	
+	cpu.Cycle();
+	
 	return 0;
 }
 

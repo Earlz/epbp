@@ -35,12 +35,12 @@ This file is part of the EPBP project
 #include <epbp.h>
 #include <stdlib.h>
 #include <string.h>
+#include <iostream>
+using namespace std;
 
 
-
-OpcodeProcessor::OpcodeProcessor(void *opcode_data,uint32_t sz_data,uint32_t flags){
-	op_data=(uint32_t*)new uint8_t[sz_data];
-	memcpy(op_data,opcode_data,sz_data);
+OpcodeProcessor::OpcodeProcessor(void *opcode_data,uint32_t flags){
+	op_data=(uint32_t*)opcode_data;
 	cl=0;
 	tr=false;
 	sr=0x1000;
@@ -66,16 +66,23 @@ OpcodeProcessor::~OpcodeProcessor(){
 
 
 void OpcodeProcessor::Cycle(){
-	
-	
-	
-	
+	switch((uint8_t)op_data[cl]){
+		case 0x00: //nop
+			cout << "nop" << endl;
+		break;
+		
+		
+		
+		
+		
+		
+	}
 }
 
 
 void OpcodeProcessor::PushCS(uint32_t code){
 	if(csl>=CALLSTACK_SIZE){
-		exception(CALLSTACK_OVERFLOW);
+		EpbpException(CALLSTACK_OVERFLOW);
 	}
 	cs[csl]=code;
 	csl++;
@@ -83,7 +90,7 @@ void OpcodeProcessor::PushCS(uint32_t code){
 
 uint32_t OpcodeProcessor::PopCS(){
 	if(csl==0){
-		exception(CALLSTACK_UNDERFLOW);
+		EpbpException(CALLSTACK_UNDERFLOW);
 	}
 	csl--;
 	return cs[csl]; //decrement csl first then return the value.
@@ -91,7 +98,7 @@ uint32_t OpcodeProcessor::PopCS(){
 
 uint32_t OpcodeProcessor::PeekCS(){
 	if(csl==0){
-		exception(CALLSTACK_UNDERFLOW);
+		EpbpException(CALLSTACK_UNDERFLOW);
 	}
 	return cs[(csl-1)];
 }
