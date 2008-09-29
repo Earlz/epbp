@@ -36,6 +36,10 @@ This file is part of the EPBP project
 #define EPBP_H
 #include <stdint.h>
 #include <stdlib.h>
+#include <string>
+#include <fstream>
+#include <iostream>
+using namespace std;
 
 //config
 static const uint32_t CALLSTACK_SIZE=512;
@@ -47,7 +51,7 @@ static const uint32_t NOT_IMPLEMENTED=3;
 static const uint32_t BAD_BANK_ALIGNMENT=4;
 static const uint32_t CALLSTACK_OVERFLOW=5;
 static const uint32_t CALLSTACK_UNDERFLOW=6;
-
+static const uint32_t BAD_FILENAME=7;
 
 
 
@@ -196,9 +200,21 @@ class OpcodeProcessor{
 };
 
 
-
-
-
+class EPBPFile{
+	ifstream file;
+	uint32_t version;
+	uint32_t code_start;
+	uint32_t code_size;
+	uint32_t data_start;
+	uint32_t data_size;
+	uint32_t extra_space;
+	
+	public:
+	EPBPFile(char* name);
+	~EPBPFile();
+	void *LoadCode();
+	void *LoadData();
+};
 
 
 

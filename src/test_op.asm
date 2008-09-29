@@ -40,12 +40,37 @@
 
 
 
-start:
+EPBP_header:
+;in format of 
+;dd version (currently 0x0000F001
+;dd code segment start
+;dd code segment end
+;dd data segment start
+;dd data segment end
+;dd space after data segment to load 
+;dd <reserved>
 org 0
+dd 0x0000F001
+dd code_start
+dd code_end
+dd data_start
+dd data_end
+dd 0 ;amount of memory
+dd 0 ;reserved
+
+
+
+code_start:
 
 ;start code
 db 0x00
 
+code_end:
+
+data_start:
+
+
+data_end:
 
 
 
