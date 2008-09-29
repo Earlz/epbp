@@ -38,7 +38,19 @@ This file is part of the EPBP project
 using namespace std;
 
 
-uint8_t *opcode_data;
+/**Variable initialization.**/
+
+char *str="Hello There Mr. Worldgdb."; //temp
+
+
+MemoryClass mem(0x10000,str,22);
+RegisterClass r(&mem);
+OpcodeProcessor cpu(LoadFile());
+EPBPFile file("bin/test_op.ebc");
+
+
+
+/**End Variable Init.**/
 
 
 void EpbpException(uint32_t code){
@@ -72,11 +84,9 @@ void *LoadFile(){
 	
 }
 	
-char *str="Hello There Mr. Worldgdb.";
 
-MemoryClass mem(0x10000,str,22);
-RegisterClass r(&mem);
-OpcodeProcessor cpu(LoadFile());
+
+
 
 
 
