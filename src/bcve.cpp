@@ -42,7 +42,7 @@ This file is part of the EPBP project
 
 MemoryClass::MemoryClass(uint32_t isize,void * idata,uint32_t data_size){
 	if(data_size>isize){ //What to do if size of initial data is greater than memory size?
-		exception(COMPILETIME_DATA_OVERFLOW);
+		EpbpException(COMPILETIME_DATA_OVERFLOW);
 	}
 	memory=new uint8_t[isize];
 	memcpy(memory,idata,data_size);
@@ -75,26 +75,26 @@ bool MemoryClass::ValidAddressRange_rw(uint32_t start,uint32_t end){
 }
 
 uint32_t MemoryClass::AllocateMemory(uint32_t size){
-	exception(NOT_IMPLEMENTED);
+	EpbpException(NOT_IMPLEMENTED);
 	return 0;
 	
 }
 
 bool MemoryClass::FreeMemory(uint32_t loc){
-	exception(NOT_IMPLEMENTED);
+	EpbpException(NOT_IMPLEMENTED);
 	return 0;
 }
 
 uint8_t &MemoryByte::operator[](uint32_t loc){
 	if(loc>m->memory_size){
-		exception(MEMORY_FAULT);
+		EpbpException(MEMORY_FAULT);
 	}
 	return m->memory[loc];
 }
 
 uint8_t MemoryByte::operator[](uint32_t loc) const{
 	if(loc>m->memory_size){
-		exception(MEMORY_FAULT);
+		EpbpException(MEMORY_FAULT);
 	}
 	return m->memory[loc];
 }
@@ -102,28 +102,28 @@ uint8_t MemoryByte::operator[](uint32_t loc) const{
 
 uint16_t &MemoryWord::operator[](uint32_t loc){
 	if(loc>(m->memory_size-1)){
-		exception(MEMORY_FAULT);
+		EpbpException(MEMORY_FAULT);
 	}
 	return (uint16_t&)m->memory[loc];
 }
 
 uint16_t MemoryWord::operator[](uint32_t loc) const{
 	if(loc>(m->memory_size-1)){
-		exception(MEMORY_FAULT);
+		EpbpException(MEMORY_FAULT);
 	}
 	return (uint16_t)m->memory[loc];
 }
 
 uint32_t &MemoryDword::operator[](uint32_t loc){
 	if(loc>(m->memory_size-3)){
-		exception(MEMORY_FAULT);
+		EpbpException(MEMORY_FAULT);
 	}
 	return (uint32_t&)m->memory[loc];
 }
 
 uint32_t MemoryDword::operator[](uint32_t loc) const{
 	if(loc>(m->memory_size-3)){
-		exception(MEMORY_FAULT);
+		EpbpException(MEMORY_FAULT);
 	}
 	return (uint32_t)m->memory[loc];
 }
@@ -162,10 +162,10 @@ uint32_t RegisterClass::operator[](uint8_t n) const{
 
 void RegisterClass::SetBank(uint32_t loc){
 	if((loc&3)!=0){
-		exception(BAD_BANK_ALIGNMENT);
+		EpbpException(BAD_BANK_ALIGNMENT);
 	}
 	if(mem->ValidAddressRange_rw(loc,loc+(256*4))==false){
-		exception(MEMORY_FAULT);
+		EpbpException(MEMORY_FAULT);
 	}
 	bank=loc;
 }

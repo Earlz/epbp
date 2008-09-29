@@ -44,7 +44,7 @@ start:
 org 0
 
 ;start code
-mov_r32_i32 12,0xFF0000FF
+db 0x00
 
 
 

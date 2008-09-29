@@ -48,6 +48,20 @@ static const uint32_t BAD_BANK_ALIGNMENT=4;
 static const uint32_t CALLSTACK_OVERFLOW=5;
 static const uint32_t CALLSTACK_UNDERFLOW=6;
 
+
+
+
+void *LoadFile();
+
+class OpcodeProcessor;
+
+extern OpcodeProcessor cpu;
+
+
+
+
+
+
 /** See deprication note in bcve.cpp
 class VirtualMachine{
 	uint8_t *memory;
@@ -152,7 +166,7 @@ class RegisterClass{
 
 
 
-void exception(uint32_t);
+void EpbpException(uint32_t);
 
 class Dump{
 	
@@ -174,7 +188,7 @@ class OpcodeProcessor{
 	uint32_t PopCS();
 	uint32_t PeekCS();
 	public:
-	OpcodeProcessor(void *opcode_data,uint32_t sz_data,uint32_t flags);
+	OpcodeProcessor(void *opcode_data,uint32_t flags=0);
 	~OpcodeProcessor();
 	void Cycle();
 	Dump DumpState();
