@@ -39,7 +39,7 @@ This file is part of the EPBP project
 using namespace std;
 
 
-OpcodeProcessor::OpcodeProcessor(void *opcode_data,uint32_t flags){
+OpcodeProcessor::OpcodeProcessor(void *opcode_data,uint32_t code_sz,uint32_t flags){
 	op_data=(uint32_t*)opcode_data;
 	cl=0;
 	tr=false;
@@ -51,6 +51,7 @@ OpcodeProcessor::OpcodeProcessor(void *opcode_data,uint32_t flags){
 	rx[3]=0;
 	cs=new uint32_t[CALLSTACK_SIZE];
 	csl=0;
+	code_size=code_sz;
 	
 	
 	

@@ -40,13 +40,13 @@ using namespace std;
 
 /**Variable initialization.**/
 
-char *str="Hello There Mr. Worldgdb."; //temp
 
 
-MemoryClass mem(0x10000,str,22);
+EPBPFile ebc_file("bin/test_op.ebc");
+MemoryClass mem(0x10000,ebc_file.LoadData(),ebc_file.DataSize());
 RegisterClass r(&mem);
-OpcodeProcessor cpu(LoadFile());
-EPBPFile file("bin/test_op.ebc");
+OpcodeProcessor cpu(ebc_file.LoadCode(),ebc_file.CodeSize());
+
 
 
 
@@ -68,21 +68,7 @@ void EpbpException(uint32_t code){
 }
 
 
-void *LoadFile(){
-	ifstream inf;
-	uint8_t *tmp=new uint8_t[(128*1024)]; //128k
-	inf.open("bin/test_op.ebc");
-	cout << "Loading File" << endl;
-	uint32_t i=0;
-	while(inf.good()==1){
-		tmp[i]=(int)inf.get();
-		cout <<hex<< (int)tmp[i] << endl;
-		i++;
-		
-	}
-	return tmp;
-	
-}
+
 	
 
 
@@ -157,8 +143,8 @@ void bcve_test(uint32_t num){
 
 int main(void){
 	int i;
-	LoadFile();
-	cout << "hi there" << endl;
+	cout << "--Shadows EPBP Implementation--" << endl;
+	cout << "--<http://epbp.earlz.biz.tm>---" << endl;
 	for(i=0;i<=1;i++){
 		bcve_test(i);
 	}

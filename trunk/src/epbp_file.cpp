@@ -34,7 +34,7 @@ This file is part of the EPBP project
 #include <string>
 
 EPBPFile::EPBPFile(char* name){
-	file.open(name);
+	file.open(name,ios::in | ios::binary);
 	if(!file){
 		EpbpException(BAD_FILENAME);
 	}
@@ -47,12 +47,13 @@ EPBPFile::EPBPFile(char* name){
 	data_start=header[3];
 	data_size=header[4]-data_start;
 	extra_space=header[5];
-	cout << "EPBP File Properties: "<< endl;
-	cout << "code start:   0x" << hex << code_start <<endl;
-	cout << "code size:    0x" << hex << code_size << endl;
-	cout << "data start:   0x" << hex << data_start << endl;
-	cout << "data size:    0x" << hex << data_size <<endl;
-	cout << "heap size:    0x" << hex << extra_space << endl;
+	cout << "EPBP File:        "<<name << endl;
+	cout << "--EBC Format Details--" << endl;
+	cout << "code start :      0x" << hex << code_start <<endl;
+	cout << "code size:        0x" << hex << code_size << endl;
+	cout << "data start:       0x" << hex << data_start << endl;
+	cout << "data size:        0x" << hex << data_size <<endl;
+	cout << "heap size:        0x" << hex << extra_space << endl;
 }
 
 EPBPFile::~EPBPFile(){
@@ -60,8 +61,30 @@ EPBPFile::~EPBPFile(){
 }
 
 
+void *EPBPFile::LoadCode(){
+	void *tmp;
+	tmp=new uint8_t[code_size];
+	file.seekg(code_start,ios::beg);
+	file.read((char*)tmp,(int)code_size);
+	return tmp;
+}
 
 
+void *EPBPFile::LoadData(){
+	void *tmp;
+	tmp=new uint8_t[data_size];
+	file.seekg(data_start,ios::beg);
+	file.read((char*)tmp,(int)data_size);
+	return tmp;
+}
 
+
+uint32_t EPBPFile::DataSize(){
+	return data_size;
+}
+
+uint32_t EPBPFile::CodeSize(){
+	return code_size;
+}
 
 

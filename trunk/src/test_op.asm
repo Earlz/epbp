@@ -69,7 +69,7 @@ code_end:
 
 data_start:
 
-
+db "Hello There Mr. Worldgdb."
 data_end:
 
 
