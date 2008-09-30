@@ -47,7 +47,7 @@ EPBPFile::EPBPFile(char* name){
 	data_start=header[3];
 	data_size=header[4]-data_start;
 	extra_space=header[5];
-	cout << "EPBP File:        "<<name << endl;
+	cout << "EBC File:        "<<name << endl;
 	cout << "--EBC Format Details--" << endl;
 	cout << "code start :      0x" << hex << code_start <<endl;
 	cout << "code size:        0x" << hex << code_size << endl;
