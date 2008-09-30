@@ -143,14 +143,17 @@ void bcve_test(uint32_t num){
 
 int main(void){
 	int i;
+	cout << "-------------------------------" << endl;
 	cout << "--Shadows EPBP Implementation--" << endl;
 	cout << "--<http://epbp.earlz.biz.tm>---" << endl;
+	cout << "-------------------------------" << endl;	
 	for(i=0;i<=1;i++){
 		bcve_test(i);
 	}
-	
-	cpu.Cycle();
-	
+	for(;;){
+		cpu.Cycle();
+	}
+
 	return 0;
 }
 

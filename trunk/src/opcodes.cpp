@@ -67,6 +67,9 @@ OpcodeProcessor::~OpcodeProcessor(){
 
 
 void OpcodeProcessor::Cycle(){
+	if(cl>code_size){
+		EpbpException(CL_OVERRUN);
+	}
 	switch((uint8_t)op_data[cl]){
 		case 0x00: //nop
 			cout << "nop" << endl;
@@ -78,8 +81,9 @@ void OpcodeProcessor::Cycle(){
 		
 		
 	}
-}
+	cl++;
 
+}
 
 void OpcodeProcessor::PushCS(uint32_t code){
 	if(csl>=CALLSTACK_SIZE){

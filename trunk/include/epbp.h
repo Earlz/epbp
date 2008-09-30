@@ -52,6 +52,7 @@ static const uint32_t BAD_BANK_ALIGNMENT=4;
 static const uint32_t CALLSTACK_OVERFLOW=5;
 static const uint32_t CALLSTACK_UNDERFLOW=6;
 static const uint32_t BAD_FILENAME=7;
+static const uint32_t CL_OVERRUN=8;
 
 
 
