@@ -66,39 +66,6 @@ extern OpcodeProcessor cpu;
 
 
 
-/** See deprication note in bcve.cpp
-class VirtualMachine{
-	uint8_t *memory;
-	uint32_t size_memory; //size of memory
-	uint32_t regbank;
-	public:
-	VirtualMachine();
-	~VirtualMachine();
-	uint32_t ReadDword(uint32_t loc); //memory functions
-	uint16_t ReadWord(uint32_t loc);
-	uint8_t ReadByte(uint32_t loc);
-	void WriteDword(uint32_t loc,uint32_t d);
-	void WriteWord(uint32_t loc,uint16_t d);
-	void WriteByte(uint32_t loc,uint8_t d);
-	bool ValidAddressRange_rw(uint32_t loc_start,uint32_t loc_end);
-	
-	uint32_t r(uint8_t num){ //register
-		return (uint32_t)memory[regbank+num];
-	}
-	//void rb(uint8_t num,uint8_t d){
-	//	memory[regbank+num]=d;
-	//}
-	void rd(uint8_t num,uint32_t d){
-		*(uint32_t*)&memory[regbank+num]=d;
-	}
-	void SetRegisterBank(uint32_t loc); //This must be aligned on 256 byte bound
-	uint32_t GetRegisterBank();
-	
-	
-};
-
-**/
-
 
 class MemoryClass;
 class MemoryByte{
@@ -187,12 +154,14 @@ class OpcodeProcessor{
 	uint32_t rx[4]; //Xcall register.
 	uint32_t *cs; //The Call Stack.
 	uint32_t csl; //location inside the call stack.
+	uint32_t code_size;
 	protected:
 	void PushCS(uint32_t code);
 	uint32_t PopCS();
 	uint32_t PeekCS();
+	uint32_t CheckCodeAddresses(); //This should only be called at initialization to check all call addresses.
 	public:
-	OpcodeProcessor(void *opcode_data,uint32_t flags=0);
+	OpcodeProcessor(void *opcode_data,uint32_t code_size,uint32_t flags=0);
 	~OpcodeProcessor();
 	void Cycle();
 	Dump DumpState();
@@ -214,6 +183,8 @@ class EPBPFile{
 	~EPBPFile();
 	void *LoadCode();
 	void *LoadData();
+	uint32_t CodeSize();
+	uint32_t DataSize();
 };
 
 
