@@ -63,7 +63,21 @@ dd 0 ;reserved
 code_start:
 
 ;start code
-db 0x00
+db 0x00 ;nop
+db 0x00 ;nop
+
+db 0x10 ;mov /
+db 0x15 ;r0x15,
+dd 0x1FF1FF1A ;<<
+
+db 0 ;nop
+
+db 0x10 ;mov /
+db 0xF1 ;rf0xF1
+dd 3.15 ;<<
+
+db 0xFE ;exit
+db 0x00 ;nop
 
 code_end:
 

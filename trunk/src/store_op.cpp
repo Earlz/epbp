@@ -29,63 +29,42 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 This file is part of the EPBP project
 </Copyright Header>
 */
-
 #include <epbp.h>
-#include <string>
 
-EPBPFile::EPBPFile(char* name){
-	file.open(name,ios::binary);
-	if(!file){
-		EpbpException(BAD_FILENAME);
+/** --Must fix the private opcode class problem
+void mov_rrf_immdimmf(){
+	cl+=1;
+	tmp=(uint8_t)op_data[cl]; //register;
+	cout <<(int) op_data[cl] << endl;
+	op_cache=*(uint32_t*)&op_data[cl+1];
+	if((tmp&0x80)==0){
+		r[tmp]=op_cache;
+		cout << "r["<<(int)tmp<<"]=0x"<<hex<<r[tmp]<<endl;
+	}else{
+		tmp=tmp&0x7F;
+		rf[tmp]=*(float32_t*)&op_data[cl+1];
+		cout << "rf["<<(int)tmp<<"]="<<(float32_t)rf[tmp]<<endl;
 	}
-	uint32_t header[6];
-			
-	file.read((char*)&header,6*4);
-	version=header[0];
-	code_start=header[1];
-	code_size=header[2]-code_start;
-	data_start=header[3];
-	data_size=header[4]-data_start;
-	extra_space=header[5];
-	cout << "EBC File:        "<<name << endl;
-	cout << "--EBC Format Details--" << endl;
-	cout << "code start :      0x" << hex << code_start <<endl;
-	cout << "code size:        0x" << hex << code_size << endl;
-	cout << "data start:       0x" << hex << data_start << endl;
-	cout << "data size:        0x" << hex << data_size <<endl;
-	cout << "heap size:        0x" << hex << extra_space << endl;
+	cl+=4;
 }
 
-EPBPFile::~EPBPFile(){
-	file.close();
-}
+**/
 
 
-void *EPBPFile::LoadCode(){
-	void *tmp;
-	tmp=new uint8_t[code_size];
-	file.seekg(code_start,ios::beg);
-	file.read((char*)tmp,(int)code_size);
-	cout << hex << *(int*)tmp << endl;
-	return tmp;
-}
 
 
-void *EPBPFile::LoadData(){
-	void *tmp;
-	tmp=new uint8_t[data_size];
-	file.seekg(data_start,ios::beg);
-	file.read((char*)tmp,(int)data_size);
-	return tmp;
-}
 
 
-uint32_t EPBPFile::DataSize(){
-	return data_size;
-}
 
-uint32_t EPBPFile::CodeSize(){
-	return code_size;
-}
+
+
+
+
+
+
+
+
+
+
 
 

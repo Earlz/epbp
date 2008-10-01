@@ -40,7 +40,7 @@ using namespace std;
 
 
 OpcodeProcessor::OpcodeProcessor(void *opcode_data,uint32_t code_sz,uint32_t flags){
-	op_data=(uint32_t*)opcode_data;
+	op_data=(uint8_t*)opcode_data;
 	cl=0;
 	tr=false;
 	sr=0x1000;
@@ -52,6 +52,11 @@ OpcodeProcessor::OpcodeProcessor(void *opcode_data,uint32_t code_sz,uint32_t fla
 	cs=new uint32_t[CALLSTACK_SIZE];
 	csl=0;
 	code_size=code_sz;
+	cout << "EBC file dump: " << endl;
+	for(uint32_t i=0;i<code_size;i++){
+		cout << "|"<<hex<<(int)op_data[i];
+	}
+	cout <<endl;
 	
 	
 	
@@ -67,22 +72,43 @@ OpcodeProcessor::~OpcodeProcessor(){
 
 
 void OpcodeProcessor::Cycle(){
-	if(cl>code_size){
+	uint8_t tmp;
+	if(cl>=code_size){
 		EpbpException(CL_OVERRUN);
 	}
+	cout <<hex << "CL: " << cl << " op_data " << (int)op_data[cl] << endl;
 	switch((uint8_t)op_data[cl]){
 		case 0x00: //nop
 			cout << "nop" << endl;
 		break;
+		case 0xFE: //exit
+			EpbpException(MANUAL_EXIT);
+		break;
+		case 0x10: //mov r/fr,immd/immf
+			/**mov_rrf_immdimmf();**/
+			cl+=1;
+			tmp=(uint8_t)op_data[cl]; //register;
+			cout <<(int) op_data[cl] << endl;
+			op_cache=*(uint32_t*)&op_data[cl+1];
+			if((tmp&0x80)==0){
+				r[tmp]=op_cache;
+				cout << "r["<<(int)tmp<<"]=0x"<<hex<<r[tmp]<<endl;
+			}else{
+				tmp=tmp&0x7F;
+				rf[tmp]=*(float32_t*)&op_data[cl+1];
+				cout << "rf["<<(int)tmp<<"]="<<(float32_t)rf[tmp]<<endl;
+			}
+			cl+=4;
+		break;
+			
 		
 		
 		
-		
-		
-		
+		default:
+		cout << "unimplemented or unknown opcode\n" << endl;	
+			
 	}
 	cl++;
-
 }
 
 void OpcodeProcessor::PushCS(uint32_t code){

@@ -153,10 +153,12 @@ RegisterClass::~RegisterClass(){
 }
 /*No validity of memory needs to be checked cause this is done automatically*/
 uint32_t &RegisterClass::operator[](uint8_t n){
+	n&=0x7F; //zero off top bit
 	return (uint32_t&)mem->memory[bank+n*4];
 }
 
 uint32_t RegisterClass::operator[](uint8_t n) const{
+	n&=0x7F; //zero off top bit
 	return (uint32_t)mem->memory[bank+n*4];
 }
 
@@ -164,7 +166,7 @@ void RegisterClass::SetBank(uint32_t loc){
 	if((loc&3)!=0){
 		EpbpException(BAD_BANK_ALIGNMENT);
 	}
-	if(mem->ValidAddressRange_rw(loc,loc+(256*4))==false){
+	if(mem->ValidAddressRange_rw(loc,loc+(256*sizeof(uint32_t)))==false){
 		EpbpException(MEMORY_FAULT);
 	}
 	bank=loc;
@@ -175,7 +177,40 @@ uint32_t RegisterClass::GetBank(){
 }
 
 
+//Float Register Class
 
+FloatRegisterClass::FloatRegisterClass(MemoryClass *memory){
+	mem=memory;
+	SetBank(128*sizeof(uint32_t));
+}
+
+FloatRegisterClass::~FloatRegisterClass(){
+	
+}
+/*No validity of memory needs to be checked cause this is done automatically*/
+float32_t &FloatRegisterClass::operator[](uint8_t n){
+	n&=0x7F; //zero off top bit
+	return (float32_t&)mem->memory[bank+n*4];
+}
+
+float32_t FloatRegisterClass::operator[](uint8_t n) const{
+	n&=0x7F; //zero off top bit
+	return (float32_t)mem->memory[bank+n*4];
+}
+
+void FloatRegisterClass::SetBank(uint32_t loc){
+	if((loc&3)!=0){
+		EpbpException(BAD_BANK_ALIGNMENT);
+	}
+	if(mem->ValidAddressRange_rw(loc,loc+(128*sizeof(float32_t)))==false){
+		EpbpException(MEMORY_FAULT);
+	}
+	bank=loc;
+}
+
+uint32_t FloatRegisterClass::GetBank(){
+	return bank;
+}
 
 
 
