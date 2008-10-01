@@ -30,61 +30,57 @@
 ;</Copyright Header>
 ;*/
 
-%include "epbp_opcodes.asm" ;include file with opcode definitions
+;;This file contains macros for the EPBP opcode definitions. Note, these are very machine-level macros.
 
 
+%macro mov_r_immd 2
+	db 0x10
+	db %1
+	dd %2
+%endmacro
 
+%macro mov_rf_immf 2
+db 0x10
+db (%1)+128
+dd %2
+%endmacro
 
+%macro mov_r_r 2
+db 0x11
+db %1
+db %2
+%endmacro
 
-EPBP_header:
-;in format of 
-;dd version (currently 0x0000F001
-;dd code segment start
-;dd code segment end
-;dd data segment start
-;dd data segment end
-;dd space after data segment to load 
-;dd <reserved>
-org 0
-dd 0x0000F001 
-dd code_start
-dd code_end
-dd data_start
-dd data_end
-dd 0 ;amount of memory
-dd 0 ;reserved
+%macro mov_rf_r 2
+db 0x11
+db %1+128
+db %2
+%endmacro
 
+%macro mov_r_rf 2
+db 0x11
+db %1
+db %2+128
+%endmacro
 
+%macro mov_rf_rf 2
+db 0x11
+db %1+128
+db %2+128
+%endmacro
 
-code_start:
+%macro nop 0
+db 0x00
+%endmacro
 
-mov_r_immd 0,0x11223344
-mov_rf_immf 0,12.5
-dmp
+%macro exit 0
+db 0xFE
+%endmacro
 
-mov_rf_rf 1,0
-mov_r_r 1,0
-dmp
+%macro dmp 0;;Shadows Specific!!
+db 0xFF
+%endmacro
 
-mov_r_immd 5,4.231 ;this is intentional
-mov_rf_immf 5,0x44332211 ;intentional
-
-mov_rf_r 4,5
-mov_r_rf 4,5 ;will exchange values into r and rf #4
-
-dmp
-
-nop
-
-exit
-nop
-
-code_end:
-
-data_start:
-
-db "Hello There Mr. Worldgdb."
-data_end:
 
 
 
