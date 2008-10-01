@@ -34,6 +34,7 @@ This file is part of the EPBP project
 
 #ifndef EPBP_H
 #define EPBP_H
+#include <epbp_float.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string>
@@ -53,7 +54,7 @@ static const uint32_t CALLSTACK_OVERFLOW=5;
 static const uint32_t CALLSTACK_UNDERFLOW=6;
 static const uint32_t BAD_FILENAME=7;
 static const uint32_t CL_OVERRUN=8;
-
+static const uint32_t MANUAL_EXIT=9;
 
 
 void *LoadFile();
@@ -114,6 +115,7 @@ class MemoryClass{
 	friend class MemoryWord;
 	friend class MemoryDword;
 	friend class RegisterClass;
+	friend class FloatRegisterClass;
 	MemoryByte db;
 	MemoryWord dw;
 	MemoryDword dd;
@@ -136,6 +138,18 @@ class RegisterClass{
 	uint32_t GetBank();
 };
 
+class FloatRegisterClass {
+	uint32_t bank;
+	MemoryClass *mem;
+	public:
+	FloatRegisterClass(MemoryClass *memory);
+	~FloatRegisterClass();
+	float32_t &operator[](uint8_t); //write
+	float32_t operator[] (uint8_t) const; //read
+	void SetBank(uint32_t loc);
+	uint32_t GetBank();
+};
+
 
 
 void EpbpException(uint32_t);
@@ -147,8 +161,8 @@ class Dump{
 
 class OpcodeProcessor{
 	uint32_t op_cache;
-	uint32_t *op_data;
-	uint32_t cl; //current location
+	uint8_t *op_data;
+	volatile uint32_t cl; //current location
 	bool tr; //truth register
 	uint32_t sr; //Stack register
 	uint16_t sr_size; //stack size
@@ -189,10 +203,16 @@ class EPBPFile{
 };
 
 
+extern EPBPFile ebc_file;
+extern MemoryClass mem;
+extern RegisterClass r;
+extern FloatRegisterClass rf;
+extern OpcodeProcessor cpu;
 
 
+/**Opcode Definitions**/
 
-
+void mov_rrf_immdimmf();
 
 
 

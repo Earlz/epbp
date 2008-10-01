@@ -45,6 +45,7 @@ using namespace std;
 EPBPFile ebc_file("bin/test_op.ebc");
 MemoryClass mem(0x10000,ebc_file.LoadData(),ebc_file.DataSize());
 RegisterClass r(&mem);
+FloatRegisterClass rf(&mem);
 OpcodeProcessor cpu(ebc_file.LoadCode(),ebc_file.CodeSize());
 
 
@@ -56,11 +57,24 @@ OpcodeProcessor cpu(ebc_file.LoadCode(),ebc_file.CodeSize());
 void EpbpException(uint32_t code){
 	switch(code){
 		case MEMORY_FAULT:
-			cout << "Exception: Code: MEMORY_FAULT"<< endl;
+			cout << ">>>Exception: Code: MEMORY_FAULT"<< endl;
+			cout << ">>>Invalid memory was dereferenced. "<<endl;
 			exit(1);
 		break;
+		case CL_OVERRUN:
+			cout << ">>>EXCEPTION: CL_OVERRUN" << endl;
+			cout << ">>>The CL program counter has overflowed out of code memory." << endl;
+			exit(1);
+			break;
+		case MANUAL_EXIT:
+			cout << ">>>EXCEPTION: MANUAL_EXIT" << endl;
+			cout << ">>>The Program has requested to manually exit." << endl;
+			cout << ">>>(This is not always an error)" << endl;
+			exit(0);
+			break;
 		default:
-			cout <<"Exception: Code: UNKNOWN"<<endl;
+			cout <<">>>Exception: UNKNOWN_EXCEPTION"<<endl;
+			cout <<">>>This exception is not yet implemented. "<<endl;
 			exit(2);
 		break;
 	}
@@ -130,6 +144,12 @@ void bcve_test(uint32_t num){
 		default:
 			cout <<"invalid test "<< endl;
 		break;
+		case 2:
+			rf[0]=10.0;
+			rf[1]=3.0;
+			rf[2]=rf[0]/rf[1];
+			cout <<"10/3 (in RF registers): "<< rf[2] << endl;
+		break;
 	}
 	
 	cout << "------------------" << endl;
@@ -147,12 +167,13 @@ int main(void){
 	cout << "--Shadows EPBP Implementation--" << endl;
 	cout << "--<http://epbp.earlz.biz.tm>---" << endl;
 	cout << "-------------------------------" << endl;	
-	for(i=0;i<=1;i++){
+	for(i=0;i<=2;i++){
 		bcve_test(i);
 	}
 	for(;;){
 		cpu.Cycle();
 	}
+	
 
 	return 0;
 }

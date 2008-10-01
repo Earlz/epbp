@@ -30,7 +30,7 @@
 
 
 
-_OBJS=objs/main.o objs/opcodes.o objs/bcve.o objs/epbp_file.o
+_OBJS=objs/main.o objs/opcodes.o objs/bcve.o objs/epbp_file.o objs/store_op.o
 debug_CPPFLAGS=-Wall -pedantic -g -fexceptions -I./include
 
 
@@ -43,6 +43,7 @@ default:
 	g++ $(debug_CPPFLAGS) -c src/bcve.cpp -o objs/bcve.o
 	g++ $(debug_CPPFLAGS) -c src/opcodes.cpp -o objs/opcodes.o
 	g++ $(debug_CPPFLAGS) -c src/epbp_file.cpp -o objs/epbp_file.o
+	g++ $(debug_CPPFLAGS) -c src/store_op.cpp -o objs/store_op.o
 	g++ $(debug_CPPFLAGS) -o bin/epbp $(_OBJS)
 
 
