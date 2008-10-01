@@ -49,3 +49,10 @@ default:
 
 clean:
 	rm -f $(_OBJS)
+	
+	
+ebc:
+#build only the EBC file
+	yasm -o bin/test_op.ebc src/test_op.asm
+
+

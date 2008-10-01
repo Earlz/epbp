@@ -72,7 +72,6 @@ OpcodeProcessor::~OpcodeProcessor(){
 
 
 void OpcodeProcessor::Cycle(){
-	uint8_t tmp;
 	if(cl>=code_size){
 		EpbpException(CL_OVERRUN);
 	}
@@ -85,23 +84,23 @@ void OpcodeProcessor::Cycle(){
 			EpbpException(MANUAL_EXIT);
 		break;
 		case 0x10: //mov r/fr,immd/immf
-			/**mov_rrf_immdimmf();**/
-			cl+=1;
-			tmp=(uint8_t)op_data[cl]; //register;
-			cout <<(int) op_data[cl] << endl;
-			op_cache=*(uint32_t*)&op_data[cl+1];
-			if((tmp&0x80)==0){
-				r[tmp]=op_cache;
-				cout << "r["<<(int)tmp<<"]=0x"<<hex<<r[tmp]<<endl;
-			}else{
-				tmp=tmp&0x7F;
-				rf[tmp]=*(float32_t*)&op_data[cl+1];
-				cout << "rf["<<(int)tmp<<"]="<<(float32_t)rf[tmp]<<endl;
-			}
-			cl+=4;
+			mov_rrf_immdimmf();
 		break;
-			
+		case 0x11: //mov r/rf,r/rf
+			mov_rrf_rrf();
+		break;
 		
+		
+		
+		
+		case 0xFF: //this is for debugging: this will dump the first 16 r and rf registers
+			int i;
+			for(i=0;i<16;i++){
+				cout << "r["<<i<<"]=0x"<<hex<<r[i]<<"; ";
+				cout << "rf["<<i<<"]="<<rf[i]<<endl;
+			}
+		
+		break;
 		
 		
 		default:

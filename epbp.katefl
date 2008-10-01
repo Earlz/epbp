@@ -5,3 +5,5 @@ file:///home/earlz/epbp/src/test_op.asm
 file:///home/earlz/epbp/src/bcve.cpp
 file:///home/earlz/epbp/src/opcodes.cpp
 file:///home/earlz/epbp/src/epbp_file.cpp
+file:///home/earlz/epbp/src/store_op.cpp
+file:///home/earlz/epbp/include/epbp_float.h
