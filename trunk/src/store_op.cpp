@@ -31,8 +31,9 @@ This file is part of the EPBP project
 */
 #include <epbp.h>
 
-/** --Must fix the private opcode class problem
-void mov_rrf_immdimmf(){
+
+void OpcodeProcessor::mov_rrf_immdimmf(){
+	uint8_t tmp;
 	cl+=1;
 	tmp=(uint8_t)op_data[cl]; //register;
 	cout <<(int) op_data[cl] << endl;
@@ -48,7 +49,30 @@ void mov_rrf_immdimmf(){
 	cl+=4;
 }
 
-**/
+void OpcodeProcessor::mov_rrf_rrf(){
+	cl++;
+	bool rx=op_data[cl]&0x80;
+	bool ry=op_data[cl+1]&0x80;
+	if((rx^ry)==0){ //matching registers
+		if(rx!=0){ //float register
+			rf[op_data[cl]]=rf[op_data[cl+1]];
+		}else{ //int register
+			r[op_data[cl]]=r[op_data[cl+1]];
+		}
+	}else{ //different regs
+		if(rx==1){ //target is float and source is int
+			uint32_t convi=r[op_data[cl+1]];
+			
+			rf[op_data[cl]]=*(float32_t*)&convi;
+			
+		}else{ //target is int and source is float
+			float32_t convf=rf[op_data[cl+1]];
+			r[op_data[cl]]=*(uint32_t*)&convf;
+		}
+	}
+	
+	cl++;
+}
 
 
 

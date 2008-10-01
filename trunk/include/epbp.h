@@ -181,6 +181,14 @@ class OpcodeProcessor{
 	void Cycle();
 	Dump DumpState();
 	void icall(uint32_t address); //equivalent of int, but much more elegant and sophisticated
+	
+	protected:
+	void mov_rrf_immdimmf();
+	void mov_rrf_rrf();
+	
+	
+	
+	
 };
 
 
@@ -200,6 +208,7 @@ class EPBPFile{
 	void *LoadData();
 	uint32_t CodeSize();
 	uint32_t DataSize();
+	
 };
 
 

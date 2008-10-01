@@ -32,10 +32,39 @@
 
 ;;Macros;;
 
-%macro mov_r32_i32 2
+%macro mov_r_immd 2
 	db 0x10
 	db %1
 	dd %2
+%endmacro
+
+%macro mov_rf_immf 2
+db 0x10
+db (%1)+128
+dd %2
+%endmacro
+
+%macro mov_r_r 2
+db 0x11
+db %1
+db %2
+%endmacro
+
+%macro mov_rf_r 2
+db 0x11
+db %1+128
+db %2
+%endmacro
+
+%macro mov_r_rf 2
+db 0x11
+db %1
+db %2+128
+%endmacro
+%macro mov_rf_rf 2
+db 0x11
+db %1+128
+db %2+128
 %endmacro
 
 
@@ -67,14 +96,61 @@ db 0x00 ;nop
 db 0x00 ;nop
 
 db 0x10 ;mov /
-db 0x15 ;r0x15,
+db 1 ;r1,
 dd 0x1FF1FF1A ;<<
+
+db 0xff ;dmp
 
 db 0 ;nop
 
 db 0x10 ;mov /
-db 0xF1 ;rf0xF1
+db 2+128 ;rf2
 dd 3.15 ;<<
+
+db 0xff ;dmp
+
+db 0x11 ;mov /
+db 3 ;r3
+db 1 ;r1 
+
+db 0xff ;dmp
+
+db 0x11 ;mov /
+db 4+128 ;rf4
+db 2+128 ;rf2
+
+db 0xff ;dmp
+
+db 0x10 ;mov /
+db 6 ;r6
+dd 0x11223344 ;<<
+
+db 0xFF ;dmp
+
+db 0x11 ;mov /
+db 0+128 ;rf0
+db 6 ;r6
+
+db 0x11 ;mov /
+db 0 ;r0
+db 0+128 ;rf0
+
+
+db 0xFF ;dmp
+
+
+db 0x10 ;mov/
+db 0 ;r0
+dd 4.83 ;<<
+
+db 0x11 ;mov/
+db 0+128 ;rf0
+db 0 ;r0
+
+db 0xFF ;dmp
+
+
+
 
 db 0xFE ;exit
 db 0x00 ;nop
