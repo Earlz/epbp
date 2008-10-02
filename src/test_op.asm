@@ -74,6 +74,38 @@ mov_r_rf 4,5 ;will exchange values into r and rf #4
 
 dmp
 
+mov_r_immd 0,0xAABBCCDD
+mov_r_immd 1,0xDDCCBBAA
+mov_rf_immf 0,1.234
+mov_rf_immf 1,4.321
+
+push_r 0
+push_rf 0
+push_r 1
+push_rf 1
+
+pop_rf 7
+pop_r 7
+pop_rf 6
+pop_r 6
+
+dmp
+
+mov_r_immd 6,8
+mov_rpif_immdf 6,0x9A8A7A6A
+
+
+dmp
+
+
+
+mov_rrf
+
+
+
+
+
+
 nop
 
 exit

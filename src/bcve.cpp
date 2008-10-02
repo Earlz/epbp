@@ -101,13 +101,19 @@ uint8_t MemoryByte::operator[](uint32_t loc) const{
 
 
 uint16_t &MemoryWord::operator[](uint32_t loc){
-	if(loc>(m->memory_size-1)){
+	if(loc==0){ //check low limit due to little-endian limits
+		EpbpException(MEMORY_FAULT);
+	}
+	if(loc>m->memory_size-1){
 		EpbpException(MEMORY_FAULT);
 	}
 	return (uint16_t&)m->memory[loc];
 }
 
 uint16_t MemoryWord::operator[](uint32_t loc) const{
+	if(loc==0){ //check low limit due to little-endian limits
+		EpbpException(MEMORY_FAULT);
+	}
 	if(loc>(m->memory_size-1)){
 		EpbpException(MEMORY_FAULT);
 	}
@@ -115,6 +121,9 @@ uint16_t MemoryWord::operator[](uint32_t loc) const{
 }
 
 uint32_t &MemoryDword::operator[](uint32_t loc){
+	if(loc<4){ //check low limit due to little-endian limits
+		EpbpException(MEMORY_FAULT);
+	}
 	if(loc>(m->memory_size-3)){
 		EpbpException(MEMORY_FAULT);
 	}
@@ -122,6 +131,9 @@ uint32_t &MemoryDword::operator[](uint32_t loc){
 }
 
 uint32_t MemoryDword::operator[](uint32_t loc) const{
+	if(loc<4){ //check low limit due to little-endian limits
+		EpbpException(MEMORY_FAULT);
+	}
 	if(loc>(m->memory_size-3)){
 		EpbpException(MEMORY_FAULT);
 	}

@@ -36,3 +36,30 @@ This file is part of the EPBP project
 /**This file contains all of the float-only math operations.
 This does include things like conversion also, (int>float, float>int)
 **/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -35,3 +35,23 @@ This file is part of the EPBP project
 
 /**This file contains all of the opcodes related to comparing two values 
 and modifying the TR register**/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

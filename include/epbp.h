@@ -165,7 +165,7 @@ class OpcodeProcessor{
 	volatile uint32_t cl; //current location
 	bool tr; //truth register
 	uint32_t sr; //Stack register
-	uint16_t sr_size; //stack size
+/**	uint16_t sr_size; //stack size **-Depricated**/
 	uint32_t rx[4]; //Xcall register.
 	uint32_t *cs; //The Call Stack.
 	uint32_t csl; //location inside the call stack.
@@ -183,11 +183,16 @@ class OpcodeProcessor{
 	void icall(uint32_t address); //equivalent of int, but much more elegant and sophisticated
 	
 	protected:
+	/**See bottom of file for abreviation information on opcodes**/
 	void mov_rrf_immdimmf();
 	void mov_rrf_rrf();
+	void push_rrf();
+	void pop_rrf();
+	void mov_rpif_immdimmf();
 	
 	
-	
+	void push(uint32_t val); //not opcodes, just helpers
+	uint32_t pop();
 	
 };
 
@@ -231,6 +236,31 @@ void mov_rrf_immdimmf();
 #endif
 
 
+/**Opcode Legend:
+The way I designed these to look leave no ambiguities with other opcodes. Each opcode is guaranteed to have a unique function name according to this.
+
+r means register.
+rf means float register
+p means pointer
+immd means immediate dword constant
+immf means immediate float constant
+immp means immediate pointer constant
+
+f means float only
+i means int only
+
+pointer info comes before integer stuff and integer stuff comes before float stuff.
+
+so to form a simple instruction, such as mov (rx/rfx),(rx,rfx)
+you would do
+mov_rrf_rrf. r means int register, and rf means float, so rrf means it can be either, according to encoding.
 
 
+
+
+
+
+
+
+**/
 

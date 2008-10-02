@@ -44,7 +44,7 @@ OpcodeProcessor::OpcodeProcessor(void *opcode_data,uint32_t code_sz,uint32_t fla
 	cl=0;
 	tr=false;
 	sr=0x1000;
-	sr_size=0xFFF; //4k
+//	sr_size=0xFFF; //4k //--Depricated
 	rx[0]=0;
 	rx[1]=0;
 	rx[2]=0;
@@ -89,7 +89,15 @@ void OpcodeProcessor::Cycle(){
 		case 0x11: //mov r/rf,r/rf
 			mov_rrf_rrf();
 		break;
-		
+		case 0x12: //push rrf
+			push_rrf();
+		break;
+		case 0x13: //pop rrf
+			pop_rrf();
+		break;
+		case 0x14: //mov [r],immd/f
+			mov_rpif_immdimmf();
+		break;
 		
 		
 		
@@ -99,6 +107,7 @@ void OpcodeProcessor::Cycle(){
 				cout << "r["<<i<<"]=0x"<<hex<<r[i]<<"; ";
 				cout << "rf["<<i<<"]="<<rf[i]<<endl;
 			}
+			cout <<"SR=0x"<<hex<<sr<<endl;
 		
 		break;
 		
@@ -134,6 +143,15 @@ uint32_t OpcodeProcessor::PeekCS(){
 }
 
 
+void OpcodeProcessor::push(uint32_t v){
+	mem.dd[(sr*4)]=v;
+	sr++;
+}
+
+uint32_t OpcodeProcessor::pop(){
+	sr--;
+	return mem.dd[(sr*4)]; 
+}
 
 
 
