@@ -75,14 +75,38 @@ void OpcodeProcessor::mov_rrf_rrf(){
 }
 
 
+void OpcodeProcessor::push_rrf(){
+	cl++;
+	if((op_data[cl]&0x80)!=0){ //float register
+		push(*(uint32_t*)&rf[(op_data[cl]&0x7F)]); //clears off top bit
+	}else{
+		push(r[op_data[cl]]);
+	}
+	
+}
+
+void OpcodeProcessor::pop_rrf(){
+	cl++;
+	if((op_data[cl]&0x80)!=0){ //float register
+		*(uint32_t*)&rf[(op_data[cl]&0x7F)]=pop();
+	}else{
+		r[op_data[cl]]=pop();
+	}
+	
+}
 
 
-
-
-
-
-
-
+void OpcodeProcessor::mov_rpif_immdimmf(){
+	cl++;
+	/*bool is_float=op_data[cl]&0x80;
+	if(is_float){ 
+		mem.dd[r[op_data[cl]]]=*(uint32_t*)&op_data[cl+1];
+	}else{*/
+	///It doesn't matter if it's a float or not, it's just memory.
+	mem.dd[r[op_data[cl]]]=*(uint32_t*)&op_data[cl+1];  
+	//}
+	cl+=4;
+}
 
 
 

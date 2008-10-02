@@ -81,6 +81,37 @@ db 0xFE
 db 0xFF
 %endmacro
 
+%macro push_r 1
+db 0x12
+db %1
+%endmacro
+
+%macro push_rf 1
+db 0x12
+db %1+128
+%endmacro
+
+%macro pop_r 1
+db 0x13
+db %1
+%endmacro
+
+%macro pop_rf 1
+db 0x13
+db %1+128
+%endmacro
+
+%macro mov_rpif_immdf 2
+db 0x14
+db %1
+dd %2
+%endmacro
+
+
+
+
+
+
 
 
 

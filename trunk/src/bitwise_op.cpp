@@ -35,3 +35,25 @@ This file is part of the EPBP project
 
 /**This file contains the opcodes related to bitwise math operations.*/
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

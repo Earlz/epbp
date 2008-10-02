@@ -8,3 +8,8 @@ file:///home/earlz/epbp/src/epbp_file.cpp
 file:///home/earlz/epbp/src/store_op.cpp
 file:///home/earlz/epbp/include/epbp_float.h
 file:///home/earlz/epbp/src/epbp_opcodes.asm
+file:///home/earlz/epbp/src/cmp_op.cpp
+file:///home/earlz/epbp/src/bitwise_op.cpp
+file:///home/earlz/epbp/src/float_op.cpp
+file:///home/earlz/epbp/src/flow_op.cpp
+file:///home/earlz/epbp/src/sys_op.cpp
