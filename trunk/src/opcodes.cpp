@@ -102,7 +102,12 @@ void OpcodeProcessor::Cycle(){
 		case 0x50: //jmp immdc
 			jmp_immdc();
 		break;
-		
+		case 0x60: //jit immdc
+			jit_immdc();
+		break;
+		case 0x61: //jif immdc
+			jif_immdc();
+		break;
 		
 		case 0xFF: //this is for debugging: this will dump the first 16 r and rf registers
 			int i;
@@ -146,7 +151,6 @@ uint32_t OpcodeProcessor::PeekCS(){
 	}
 	return cs[(csl-1)];
 }
-
 
 void OpcodeProcessor::push(uint32_t v){
 	mem.dd[(sr*4)]=v;

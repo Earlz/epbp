@@ -113,9 +113,25 @@ dmp
 nop
 
 
-label2:
-nop
-jmp_immdc label2
+;label2: ;infinite loop test(success)
+;nop
+;jmp_immdc label2
+
+jit_immdc _bad
+jif_immdc _good
+invld
+
+_bad:
+mov_r_immd 0,0xBADBAD
+jmp_immdc _skip
+invld
+_good:
+mov_r_immd 0,0x13371337
+jmp_immdc _skip
+invld
+
+_skip:
+dmp
 
 
 

@@ -109,6 +109,8 @@ class MemoryClass{
 	public:
 	MemoryClass(uint32_t initial_size,void *initial_data=NULL,uint32_t data_size=0);
 	~MemoryClass();
+
+
 	bool ValidAddressRange_rw(uint32_t loc_start,uint32_t loc_end);
 	uint32_t AllocateMemory(uint32_t size);
 	bool FreeMemory(uint32_t loc);
@@ -192,7 +194,8 @@ class OpcodeProcessor{
 	void mov_rpif_immdimmf();
 	void jmp_immwc(); //not working
 	void jmp_immdc();
-	
+	void jif_immdc();
+	void jit_immdc();	
 	
 	void push(uint32_t val); //not opcodes, just helpers
 	uint32_t pop();
