@@ -54,8 +54,23 @@ void OpcodeProcessor::jmp_immdc(){
 	cl--; //compensate for the increment at end of Cycle
 }
 	
+void OpcodeProcessor::jit_immdc(){
+	if(tr==1){
+		cl=*(uint32_t*)&op_data[cl+1];
+		cl--;
+	}else{
+		cl+=4;
+	}
+}
+void OpcodeProcessor::jif_immdc(){
 	
-	
+	if(tr==0){
+		cl=*(uint32_t*)&op_data[cl+1];
+		cl--;
+	}else{
+		cl+=4;
+	}	
+}
 
 
 

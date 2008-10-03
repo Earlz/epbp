@@ -116,7 +116,15 @@ db 0x50
 dd %1-(7*4) ;7*4 is header size
 %endmacro
 
+%macro jit_immdc 1
+db 0x60
+dd %1-7*4
+%endmacro
 
+%macro jif_immdc 1
+db 0x61
+dd %1-7*4
+%endmacro
 
 
 
