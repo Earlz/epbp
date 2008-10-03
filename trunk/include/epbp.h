@@ -55,6 +55,7 @@ static const uint32_t CALLSTACK_UNDERFLOW=6;
 static const uint32_t BAD_FILENAME=7;
 static const uint32_t CL_OVERRUN=8;
 static const uint32_t MANUAL_EXIT=9;
+static const uint32_t BAD_OPCODE=10;
 
 
 void *LoadFile();
@@ -189,6 +190,8 @@ class OpcodeProcessor{
 	void push_rrf();
 	void pop_rrf();
 	void mov_rpif_immdimmf();
+	void jmp_immwc(); //not working
+	void jmp_immdc();
 	
 	
 	void push(uint32_t val); //not opcodes, just helpers

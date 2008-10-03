@@ -35,10 +35,27 @@ This file is part of the EPBP project
 
 /**This file contains all the opcodes related to flow control.**/
 
+#include <epbp.h>
 
 
 
 
+void OpcodeProcessor::jmp_immwc(){
+	//int16_t ad=*(int16_t*)&op_data[cl+1];
+	
+}
+
+
+void OpcodeProcessor::jmp_immdc(){
+	uint32_t ad=*(uint32_t*)&op_data[cl+1];
+	
+	cl=ad;
+	cout << "cl="<<hex<<cl<<endl;
+	cl--; //compensate for the increment at end of Cycle
+}
+	
+	
+	
 
 
 

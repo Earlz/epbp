@@ -98,8 +98,24 @@ mov_rpif_immdf 6,0x9A8A7A6A
 dmp
 
 
+jmp_immdc label1
 
-mov_rrf
+invld
+invld
+invld
+invld
+
+
+
+label1:
+nop
+dmp
+nop
+
+
+label2:
+nop
+jmp_immdc label2
 
 
 

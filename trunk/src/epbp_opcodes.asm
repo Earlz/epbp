@@ -107,7 +107,14 @@ db %1
 dd %2
 %endmacro
 
+%macro invld 0
+db 0xBA
+%endmacro
 
+%macro jmp_immdc 1
+db 0x50
+dd %1-(7*4) ;7*4 is header size
+%endmacro
 
 
 
