@@ -119,6 +119,7 @@ class MemoryClass{
 	friend class MemoryDword;
 	friend class RegisterClass;
 	friend class FloatRegisterClass;
+	//friend class FloatIntRegisterClass;
 	MemoryByte db;
 	MemoryWord dw;
 	MemoryDword dd;
@@ -153,7 +154,32 @@ class FloatRegisterClass {
 	uint32_t GetBank();
 };
 
+extern RegisterClass r;
+extern FloatRegisterClass rf;
 
+class FloatIntRegisterClass{ //rrf functionality --automatically parse things.
+	
+	public:
+	uint32_t operator[](uint8_t n) const{
+		if((n&0x80)!=0){ //is float
+			return *(uint32_t*)&rf[n&0x7F];
+		}else{
+			return r[n];
+		}
+	}
+	FloatIntRegisterClass(){}
+	/*
+	uint32_t &operator[](uint8_t n){
+		if((n&0x80)!=0){ //is float?
+			return &(*(uint32_t*)&rf[n&0x7F]);
+		}else{
+			return &r[n];
+		}
+	}
+	*/
+};
+
+extern const FloatIntRegisterClass rrf;
 
 void EpbpException(uint32_t);
 
@@ -196,6 +222,13 @@ class OpcodeProcessor{
 	void jmp_immdc();
 	void jif_immdc();
 	void jit_immdc();	
+	void cls_rrf_rrf();
+	void cle_rrf_rrf();
+	void cgt_rrf_rrf();
+	void cge_rrf_rrf();
+	void cne_rrf_rrf();
+	void ceq_rrf_rrf();
+	
 	
 	void push(uint32_t val); //not opcodes, just helpers
 	uint32_t pop();
@@ -225,8 +258,7 @@ class EPBPFile{
 
 extern EPBPFile ebc_file;
 extern MemoryClass mem;
-extern RegisterClass r;
-extern FloatRegisterClass rf;
+
 extern OpcodeProcessor cpu;
 
 

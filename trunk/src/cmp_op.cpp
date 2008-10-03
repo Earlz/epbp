@@ -36,10 +36,152 @@ This file is part of the EPBP project
 /**This file contains all of the opcodes related to comparing two values 
 and modifying the TR register**/
 
+#include <epbp.h>
 
 
+void OpcodeProcessor::cls_rrf_rrf(){
+	cl++;
+	
+	bool is_floatl=op_data[cl]&0x80;
+	bool is_floatr=op_data[cl+1]&0x80;
+	
+	if((is_floatl^is_floatr)==0){ //matching registers
+		if(is_floatr){ //float register
+			tr=rf[op_data[cl]]<rf[op_data[cl+1]];
+		}else{ //int register
+			tr=r[op_data[cl]]<r[op_data[cl+1]];
+		}
+	}else{ //different regs
+		if(is_floatl==1){ //lvalue is float, rvalue is int
+			tr=rf[op_data[cl]]<*(float32_t*)&r[op_data[cl+1]];;
+			
+		}else{ //left is int and right is float
+			tr=r[op_data[cl]]<*(uint32_t*)&rf[op_data[cl+1]];
+		}
+	}
+	cl++;
+		
+}
 
+void OpcodeProcessor::cle_rrf_rrf(){
+	cl++;
+	
+	bool is_floatl=op_data[cl]&0x80;
+	bool is_floatr=op_data[cl+1]&0x80;
+	
+	if((is_floatl^is_floatr)==0){ //matching registers
+		if(is_floatr){ //float register
+			tr=rf[op_data[cl]]<=rf[op_data[cl+1]];
+		}else{ //int register
+			tr=r[op_data[cl]]<=r[op_data[cl+1]];
+		}
+	}else{ //different regs
+		if(is_floatl==1){ //lvalue is float, rvalue is int
+			tr=rf[op_data[cl]]<=*(float32_t*)&r[op_data[cl+1]];;
+			
+		}else{ //left is int and right is float
+			tr=r[op_data[cl]]<=*(uint32_t*)&rf[op_data[cl+1]];
+		}
+	}
+	cl++;
+		
+}
 
+void OpcodeProcessor::cgt_rrf_rrf(){
+	cl++;
+	
+	bool is_floatl=op_data[cl]&0x80;
+	bool is_floatr=op_data[cl+1]&0x80;
+	
+	if((is_floatl^is_floatr)==0){ //matching registers
+		if(is_floatr){ //float register
+			tr=rf[op_data[cl]]>rf[op_data[cl+1]];
+		}else{ //int register
+			tr=r[op_data[cl]]>r[op_data[cl+1]];
+		}
+	}else{ //different regs
+		if(is_floatl==1){ //lvalue is float, rvalue is int
+			tr=rf[op_data[cl]]>*(float32_t*)&r[op_data[cl+1]];;
+			
+		}else{ //left is int and right is float
+			tr=r[op_data[cl]]>*(uint32_t*)&rf[op_data[cl+1]];
+		}
+	}
+	cl++;
+		
+}
+
+void OpcodeProcessor::cge_rrf_rrf(){
+	cl++;
+	
+	bool is_floatl=op_data[cl]&0x80;
+	bool is_floatr=op_data[cl+1]&0x80;
+	
+	if((is_floatl^is_floatr)==0){ //matching registers
+		if(is_floatr){ //float register
+			tr=rf[op_data[cl]]>=rf[op_data[cl+1]];
+		}else{ //int register
+			tr=r[op_data[cl]]>=r[op_data[cl+1]];
+		}
+	}else{ //different regs
+		if(is_floatl==1){ //lvalue is float, rvalue is int
+			tr=rf[op_data[cl]]>=*(float32_t*)&r[op_data[cl+1]];;
+			
+		}else{ //left is int and right is float
+			tr=r[op_data[cl]]>=*(uint32_t*)&rf[op_data[cl+1]];
+		}
+	}
+	cl++;
+		
+}
+
+void OpcodeProcessor::cne_rrf_rrf(){
+	cl++;
+	
+	bool is_floatl=op_data[cl]&0x80;
+	bool is_floatr=op_data[cl+1]&0x80;
+	
+	if((is_floatl^is_floatr)==0){ //matching registers
+		if(is_floatr){ //float register
+			tr=rf[op_data[cl]]!=rf[op_data[cl+1]];
+		}else{ //int register
+			tr=r[op_data[cl]]!=r[op_data[cl+1]];
+		}
+	}else{ //different regs
+		if(is_floatl==1){ //lvalue is float, rvalue is int
+			tr=rf[op_data[cl]]!=*(float32_t*)&r[op_data[cl+1]];;
+			
+		}else{ //left is int and right is float
+			tr=r[op_data[cl]]!=*(uint32_t*)&rf[op_data[cl+1]];
+		}
+	}
+	cl++;
+		
+}
+
+void OpcodeProcessor::ceq_rrf_rrf(){
+	cl++;
+	
+	bool is_floatl=op_data[cl]&0x80;
+	bool is_floatr=op_data[cl+1]&0x80;
+	
+	if((is_floatl^is_floatr)==0){ //matching registers
+		if(is_floatr){ //float register
+			tr=rf[op_data[cl]]==rf[op_data[cl+1]];
+		}else{ //int register
+			tr=r[op_data[cl]]==r[op_data[cl+1]];
+		}
+	}else{ //different regs
+		if(is_floatl==1){ //lvalue is float, rvalue is int
+			tr=rf[op_data[cl]]==*(float32_t*)&r[op_data[cl+1]];;
+			
+		}else{ //left is int and right is float
+			tr=r[op_data[cl]]==*(uint32_t*)&rf[op_data[cl+1]];
+		}
+	}
+	cl++;
+		
+}
 
 
 
