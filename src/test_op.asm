@@ -46,6 +46,7 @@ EPBP_header:
 ;dd space after data segment to load 
 ;dd <reserved>
 org 0
+ebc_header:
 dd 0x0000F001 
 dd code_start
 dd code_end
@@ -54,7 +55,8 @@ dd data_end
 dd 0 ;amount of memory
 dd 0 ;reserved
 
-
+ebc_header_end:
+;this gap is ignored, so any extra "hidden" information can be put here
 
 code_start:
 
@@ -117,8 +119,13 @@ nop
 ;nop
 ;jmp_immdc label2
 
-jit_immdc _bad
-jif_immdc _good
+;Trivial test of using integers to store floats. This should be true.
+mov_rf_immf 0,3.5
+mov_r_immd 1,3.5
+ceq_rf_r 0,1
+
+jit_immdc _good
+jif_immdc _bad
 invld
 
 _bad:

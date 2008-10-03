@@ -31,6 +31,7 @@
 ;*/
 
 ;;This file contains macros for the EPBP opcode definitions. Note, these are very machine-level macros.
+%xdefine HEADER_SIZE (7*4)
 
 
 %macro mov_r_immd 2
@@ -113,20 +114,163 @@ db 0xBA
 
 %macro jmp_immdc 1
 db 0x50
-dd %1-(7*4) ;7*4 is header size
+dd %1-HEADER_SIZE ;7*4 is header size
 %endmacro
 
 %macro jit_immdc 1
 db 0x60
-dd %1-7*4
+dd %1-HEADER_SIZE
 %endmacro
 
 %macro jif_immdc 1
 db 0x61
-dd %1-7*4
+dd %1-HEADER_SIZE
 %endmacro
 
+%macro cls_r_r 2
+db 0x80
+db %1
+db %2
+%endmacro
 
+%macro cls_rf_rf 2
+db 0x80
+db %1+128
+db %2+128
+%endmacro
+
+%macro cls_r_rf 2
+db 0x80
+db %1
+db %2+128
+%endmacro
+
+%macro cls_rf_r 2
+db 0x80
+db %1+128
+db %2
+%endmacro
+;;;;;;
+%macro cle_r_r 2
+db 0x81
+db %1
+db %2
+%endmacro
+
+%macro cle_rf_rf 2
+db 0x81
+db %1+128
+db %2+128
+%endmacro
+
+%macro cle_r_rf 2
+db 0x81
+db %1
+db %2+128
+%endmacro
+
+%macro cle_rf_r 2
+db 0x81
+db %1+128
+db %2
+%endmacro
+;;;;;;
+%macro cgt_r_r 2
+db 0x82
+db %1
+db %2
+%endmacro
+
+%macro cgt_rf_rf 2
+db 0x82
+db %1+128
+db %2+128
+%endmacro
+
+%macro cgt_r_rf 2
+db 0x82
+db %1
+db %2+128
+%endmacro
+
+%macro cgt_rf_r 2
+db 0x82
+db %1+128
+db %2
+%endmacro
+;;;;;;
+%macro cge_r_r 2
+db 0x83
+db %1
+db %2
+%endmacro
+
+%macro cge_rf_rf 2
+db 0x83
+db %1+128
+db %2+128
+%endmacro
+
+%macro cge_r_rf 2
+db 0x83
+db %1
+db %2+128
+%endmacro
+
+%macro cge_rf_r 2
+db 0x83
+db %1+128
+db %2
+%endmacro
+;;;;;;
+%macro cne_r_r 2
+db 0x84
+db %1
+db %2
+%endmacro
+
+%macro cne_rf_rf 2
+db 0x84
+db %1+128
+db %2+128
+%endmacro
+
+%macro cne_r_rf 2
+db 0x84
+db %1
+db %2+128
+%endmacro
+
+%macro cne_rf_r 2
+db 0x84
+db %1+128
+db %2
+%endmacro
+;;;;;;
+%macro ceq_r_r 2
+db 0x85
+db %1
+db %2
+%endmacro
+
+%macro ceq_rf_rf 2
+db 0x85
+db %1+128
+db %2+128
+%endmacro
+
+%macro ceq_r_rf 2
+db 0x85
+db %1
+db %2+128
+%endmacro
+
+%macro ceq_rf_r 2
+db 0x85
+db %1+128
+db %2
+%endmacro
+;;;;;;
 
 
 

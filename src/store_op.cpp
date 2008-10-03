@@ -36,15 +36,12 @@ void OpcodeProcessor::mov_rrf_immdimmf(){
 	uint8_t tmp;
 	cl+=1;
 	tmp=(uint8_t)op_data[cl]; //register;
-	cout <<(int) op_data[cl] << endl;
 	op_cache=*(uint32_t*)&op_data[cl+1];
 	if((tmp&0x80)==0){
 		r[tmp]=op_cache;
-		cout << "r["<<(int)tmp<<"]=0x"<<hex<<r[tmp]<<endl;
 	}else{
 		tmp=tmp&0x7F;
 		rf[tmp]=*(float32_t*)&op_data[cl+1];
-		cout << "rf["<<(int)tmp<<"]="<<(float32_t)rf[tmp]<<endl;
 	}
 	cl+=4;
 }

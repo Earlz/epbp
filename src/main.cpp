@@ -47,6 +47,7 @@ MemoryClass mem(0x10000,ebc_file.LoadData(),ebc_file.DataSize());
 RegisterClass r(&mem);
 FloatRegisterClass rf(&mem);
 OpcodeProcessor cpu(ebc_file.LoadCode(),ebc_file.CodeSize());
+const FloatIntRegisterClass rrf;
 
 
 

@@ -108,6 +108,23 @@ void OpcodeProcessor::Cycle(){
 		case 0x61: //jif immdc
 			jif_immdc();
 		break;
+		case 0x80: //cls rrf rrf
+			cls_rrf_rrf();
+		break;
+		case 0x81:
+			cle_rrf_rrf();
+		break;
+		case 0x82:
+			cgt_rrf_rrf();
+		break;
+		case 0x83:
+			cge_rrf_rrf();
+		break;
+		case 0x84:
+			cne_rrf_rrf();
+		break;
+		case 0x85:
+			ceq_rrf_rrf();
 		
 		case 0xFF: //this is for debugging: this will dump the first 16 r and rf registers
 			int i;
