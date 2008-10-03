@@ -99,6 +99,9 @@ void OpcodeProcessor::Cycle(){
 			mov_rpif_immdimmf();
 		break;
 		
+		case 0x50: //jmp immdc
+			jmp_immdc();
+		break;
 		
 		
 		case 0xFF: //this is for debugging: this will dump the first 16 r and rf registers
@@ -108,12 +111,14 @@ void OpcodeProcessor::Cycle(){
 				cout << "rf["<<i<<"]="<<rf[i]<<endl;
 			}
 			cout <<"SR=0x"<<hex<<sr<<endl;
+			cout <<"TR="<<tr<<endl;
+			cout <<"CL="<<hex<<cl<<endl;
 		
 		break;
 		
 		
 		default:
-		cout << "unimplemented or unknown opcode\n" << endl;	
+		EpbpException(BAD_OPCODE);	
 			
 	}
 	cl++;

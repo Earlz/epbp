@@ -72,6 +72,12 @@ void EpbpException(uint32_t code){
 			cout << ">>>(This is not always an error)" << endl;
 			exit(0);
 			break;
+		case BAD_OPCODE:
+			cout <<">>>EXCEPTION: BAD_OPCODE" << endl;
+			cout <<">>>An unimplemented or invalid opcode attempted to be executed" <<endl;
+			exit(1);
+			break;
+			
 		default:
 			cout <<">>>Exception: UNKNOWN_EXCEPTION"<<endl;
 			cout <<">>>This exception is not yet implemented. "<<endl;
