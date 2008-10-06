@@ -35,3 +35,32 @@ This file is part of the EPBP project
 
 /**This file contains all the general math operations, such as adding 
 and subtracting**/
+
+#include <epbp.h>
+
+
+
+
+
+void OpcodeProcessor::add_rrf_immdimmf(){
+	uint8_t tmp;
+	cl+=1;
+	tmp=(uint8_t)op_data[cl]; //register;
+	op_cache=*(uint32_t*)&op_data[cl+1];
+	if((tmp&0x80)==0){
+		r[tmp]=r[tmp]+op_cache;
+	}else{
+		tmp=tmp&0x7F;
+		rf[tmp]=rf[tmp]+*(float32_t*)&op_data[cl+1];
+	}
+	cl+=4;
+}
+
+
+
+
+
+
+
+
+

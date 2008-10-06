@@ -75,7 +75,7 @@ void OpcodeProcessor::Cycle(){
 	if(cl>=code_size){
 		EpbpException(CL_OVERRUN);
 	}
-	cout <<hex << "CL: " << cl << " op_data " << (int)op_data[cl] << endl;
+//	cout <<hex << "CL: " << cl << " op_data " << hex<<(int)op_data[cl] << endl;
 	switch((uint8_t)op_data[cl]){
 		case 0x00: //nop
 			cout << "nop" << endl;
@@ -125,6 +125,17 @@ void OpcodeProcessor::Cycle(){
 		break;
 		case 0x85:
 			ceq_rrf_rrf();
+		break;
+			
+		case 0x20:
+			call_immdc();
+		break;
+		case 0xE0:
+			ret();
+		break;
+		case 0xB0:
+			add_rrf_immdimmf();
+		break;
 		
 		case 0xFF: //this is for debugging: this will dump the first 16 r and rf registers
 			int i;

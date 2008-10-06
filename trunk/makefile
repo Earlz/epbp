@@ -32,7 +32,7 @@
 
 _OBJS=objs/main.o objs/opcodes.o objs/bcve.o objs/epbp_file.o objs/store_op.o objs/cmp_op.o objs/math_op.o objs/bitwise_op.o objs/float_op.o objs/sys_op.o objs/flow_op.o
 debug_CPPFLAGS=-Wall -pedantic -g -I./include
-
+#Note: Right now, O3 does work
 
 
 
