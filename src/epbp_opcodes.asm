@@ -272,5 +272,29 @@ db %2
 %endmacro
 ;;;;;;
 
+%macro call_immdc 1
+db 0x20
+dd %1-HEADER_SIZE
+%endmacro
+
+%macro ret 0
+db 0xE0
+%endmacro
+
+%macro add_r_immd 2
+db 0xB0
+db %1
+dd %2
+%endmacro
+
+%macro add_rf_immf 2
+db 0xB0
+db %1+128
+dd %2
+%endmacro
+
+
+
+
 
 

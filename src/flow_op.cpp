@@ -73,7 +73,19 @@ void OpcodeProcessor::jif_immdc(){
 }
 
 
+void OpcodeProcessor::call_immdc(){
+	cl++;
+	//cout <<"t"<<endl;
+	PushCS(cl+4);
+	cl=*(uint32_t*)&op_data[cl];
+	cl--;
+}
 
+
+void OpcodeProcessor::ret(){
+	cl=PopCS();
+	cl--;
+}
 
 
 

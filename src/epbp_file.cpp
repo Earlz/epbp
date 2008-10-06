@@ -63,10 +63,12 @@ EPBPFile::~EPBPFile(){
 
 void *EPBPFile::LoadCode(){
 	void *tmp;
+	cout <<"!!"<<endl;
 	tmp=new uint8_t[code_size];
 	file.seekg(code_start,ios::beg);
 	file.read((char*)tmp,(int)code_size);
 	cout << hex << *(int*)tmp << endl;
+	cout <<"!!"<<endl;
 	return tmp;
 }
 

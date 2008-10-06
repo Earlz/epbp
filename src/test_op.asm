@@ -141,6 +141,24 @@ _skip:
 dmp
 
 
+call_immdc test_proc
+
+mov_r_immd 11,0x13371337
+dmp
+
+
+mov_r_immd 12,0
+mov_r_immd 13,10000000
+_loop1:
+
+call_immdc burn_in
+add_r_immd 12,1
+cls_r_r 12,13
+jit_immdc _loop1
+
+
+
+dmp
 
 
 
@@ -149,6 +167,35 @@ nop
 
 exit
 nop
+
+
+
+
+test_proc:
+mov_r_immd 10,0x13371337
+add_r_immd 10,1
+dmp
+ret
+
+
+
+
+burn_in:
+mov_r_immd 0,0
+mov_r_immd 1,0
+mov_r_immd 2,0
+mov_r_immd 3,0
+mov_r_immd 4,0
+mov_r_immd 5,0
+mov_r_immd 6,0
+mov_r_immd 7,0
+mov_r_immd 8,0
+mov_r_immd 9,0
+mov_r_immd 10,0
+mov_r_immd 11,0
+ret
+
+
 
 code_end:
 

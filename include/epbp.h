@@ -228,6 +228,11 @@ class OpcodeProcessor{
 	void cge_rrf_rrf();
 	void cne_rrf_rrf();
 	void ceq_rrf_rrf();
+	void ret();
+	void call_immdc();
+	void add_rrf_immdimmf();
+	
+	
 	
 	
 	void push(uint32_t val); //not opcodes, just helpers
