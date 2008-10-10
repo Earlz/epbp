@@ -48,9 +48,25 @@ static const uint32_t REGEX_MAX=64; //maximum number of regular expressions per 
 /**Regular Expression Syntax Rules**/
 static const string label_decl_re_pattern="_[a-zA-Z0-9_]*: "; //label declaration
 static const string label_re_pattern="_[a-zA-Z0-9_]* "; //label usage(as a variable)
-static const string register_re_pattern="\s?(?=,)?r[0-9]{1,3}(?=,)?[^[A-Za-z0-9_]"; //register usage
+static const string register_re_pattern="(?=,)?r[0-9]{1,3}(?=,)?(?![A-Za-z0-9_])"; //register usage
 
 
+
+/**Intended matching:
+Registers: (where it would match the r0 part and only the r0 part)
+matches:
+mov r0,r0
+mov r0 , r0
+mov r0,1
+mov    r0     ,     r0    
+
+not-matches:
+mov r0a,r0b
+mov r01234,r01234
+mov r0_, r0
+
+
+*/
 
 
 
