@@ -14,3 +14,7 @@ file:///home/earlz/epbp/src/float_op.cpp
 file:///home/earlz/epbp/src/flow_op.cpp
 file:///home/earlz/epbp/src/sys_op.cpp
 file:///home/earlz/epbp/src/math_op.cpp
+file:///home/earlz/epbp/easm/src/main.cpp
+file:///home/earlz/epbp/easm/makefile
+file:///home/earlz/epbp/easm/include/easm.h
+file:///home/earlz/epbp/easm/src/regex.cpp

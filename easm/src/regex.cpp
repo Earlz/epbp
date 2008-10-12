@@ -48,6 +48,7 @@ int32_t RegEx::match(string test,uint32_t max,int flags){
 	uint32_t i;
 	no_match=1;
 	matches=new string[max];
+	matches_pos=new uint32_t[max];
 	error=regexec(&re,(char*)test.c_str(),1,&ma,flags);
 	if(error){
 		no_match=1;
@@ -106,3 +107,22 @@ void RegEx::free(){
 
 
 }
+
+uint32_t RegEx::match_pos(uint32_t n){
+	if(no_match){return 0;}
+	if(n>matches_limit){
+		return 0;
+	}else{
+		return matches_pos[n];
+	}	
+}
+
+
+
+
+
+
+
+
+
+
