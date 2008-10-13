@@ -280,23 +280,81 @@ void mov_rrf_immdimmf();
 
 
 /**Opcode Legend:
-The way I designed these to look leave no ambiguities with other opcodes. Each opcode is guaranteed to have a unique function name according to this.
 
-r means register.
-rf means float register
-p means pointer
-immd means immediate dword constant
-immf means immediate float constant
-immp means immediate pointer constant
 
-f means float only
-i means int only
+***New Encoding with Option Bits***
+r means register, rf means float register.
+immd means immediate dword/dword float/pointer constant
+immp is immediate pointer(only)
+--//a prefix of f means float only, i means integer only, p means pointer only.
 
-pointer info comes before integer stuff and integer stuff comes before float stuff.
+if r has no prefix, it is assumed integer only.
+F means float option bit. If this is prefixed then the first bit will determine if the operation is float based.
+I means index option bit. If this is prefixed before a memory operand, then it will determine if the displacement is multiplied or added.
+D means direct option bit. If this is prefixed before a register or immediate(in some cases) then this means it can be referenced as a direct value(no dereference) or an indirect value(treated as a pointer)
+L means lock option bit. This is for locking the address bus. Not currently used.
+S means sign option bit. This determines if the operand should be treated as a signed value. This only affects integer values. This is used in comparisons and for sign extending.
+U means unallocated option bit. If an option bit is later used such as on an immediate, it will actual go into this U option bit. This is only for naming purposes. 
+B means byte. Note, this can only be used with indirect addressing. if set, then the address holds a byte, else holds a dword(the default and assumed type)
+W means word. This can only be used with indirect addressing. If set, the address holds a word, else holds a dword.
+Z means byte-word flipping of size. If set, then the address holds a byte, else it holds a word.
 
-so to form a simple instruction, such as mov (rx/rfx),(rx,rfx)
-you would do
-mov_rrf_rrf. r means int register, and rf means float, so rrf means it can be either, according to encoding.
+
+Code address options:
+immdc is immediate dword code address
+immbc is byte code address
+immwc is word code address
+
+In order for code address option bits to be used, one bit must be left off of the code address. For this reason, they will not commonly be used and instead encoded directly into the instruction.
+
+R means relative address. If set, the code address will be added to the CL, rather than setting the CL absolutely.
+
+
+
+
+For any instruction where an option bit can ambigously be assumed, to unambigously specify them, they should be placed as a seperate operand. For the inversion of an option bit, it should be prefixed with an X.
+Such for a cgt where it is signed only(and thus int only)
+cgt_XF_Dr_immd.
+
+
+So this is what a few instructions mean.
+Note, float registers can not be used as a pointer.
+
+mov_Fr_Dr
+mov float register/integer register, float register/[integer register]
+
+mov_Ur_Dimmd
+mov integer register, immediate dword/[immediate pointer]
+
+cgt_Fr_SDr
+if float option:
+cgt float register, float register/[integer register]
+else
+cgt integer register, integer register ;if Sign bit set, compared as signed values, else compared unsigned.
+endif
+
+
+cgtS_Ur_Dimmd (This is a complex example)
+Since the S is encoded directly into the instruction, it is always a signed comparison.
+Because there is a bit directly in the opcode, this instruction will take up two opcodes.
+one for the signed option bit version, and the other for the unsigned option bit version.
+so it goes like this,
+if S bit
+cgt(signed) integer register, immdiate dword/[immediate pointer]
+else
+cgt(unsigned) integer register, immediate dword/[immediate pointer]
+
+cgt_XF_Dr_immd:
+This instruction is integer only(not float) so,
+cgt integer register/[integer register], immediate dword
+Note this is equivalent(by assumption) to cgt_Dr_immd. The long unassumed version should be used only where the definition of an opcode can be ambiguous.
+such as
+cgt_Ur_Bimmp
+With this, it may be unclear as to if the comparison is signed or unsigned. Signing is assumed unsigned, but if both signed and unsigned instructions exist, this causes a problem.
+So, if both instructions exist, they should be as follows
+cgt_XS_Ur_Bimmp (unsigned)
+cgt_S_Ur_Bimmp (signed) note, the byte of immp is also sign extended. If it should not be sign extended and assumed to be unsigned(although I don't think I will support signed-unsigned comparisons, I'll show it just for example) it will be:
+cgt_S_Ur_XS_Bimmp
 
 
 
