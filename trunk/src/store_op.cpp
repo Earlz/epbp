@@ -32,84 +32,47 @@ This file is part of the EPBP project
 #include <epbp.h>
 
 
-void OpcodeProcessor::mov_rrf_immdimmf(){
-	uint8_t tmp;
-	cl+=1;
-	tmp=(uint8_t)op_data[cl]; //register;
-	op_cache=*(uint32_t*)&op_data[cl+1];
-	if((tmp&0x80)==0){
-		r[tmp]=op_cache;
-	}else{
-		tmp=tmp&0x7F;
-		rf[tmp]=*(float32_t*)&op_data[cl+1];
+void OpcodeProcessor::mov_Drf_immd(){
+	cl++;
+	//note option bits are filtered out in the r and rf helper classes.
+	if(option_bit(ops[cl])){ //is a displacement
+		cout <<"t";
+		mem.dd[r[ops[cl]]]=ops[cl+1];
+	}else{ //is a immediate to float mov
+		cout << "f";
+		rf[ops[cl]]=to_float(ops[cl+1]);
 	}
 	cl+=4;
 }
 
-void OpcodeProcessor::mov_rrf_rrf(){
+void OpcodeProcessor::mov_Fr_Dr(){
 	cl++;
-	bool rx=op_data[cl]&0x80;
-	bool ry=op_data[cl+1]&0x80;
-	if((rx^ry)==0){ //matching registers
-		if(rx!=0){ //float register
-			rf[op_data[cl]]=rf[op_data[cl+1]];
-		}else{ //int register
-			r[op_data[cl]]=r[op_data[cl+1]];
-		}
-	}else{ //different regs
-		if(rx==1){ //target is float and source is int
-			uint32_t convi=r[op_data[cl+1]];
-			
-			rf[op_data[cl]]=*(float32_t*)&convi;
-			
-		}else{ //target is int and source is float
-			float32_t convf=rf[op_data[cl+1]];
-			r[op_data[cl]]=*(uint32_t*)&convf;
-		}
+	switch((option_bit(ops[cl])<<1) | option_bit(ops[cl+1])){
+		case 0: //not float and not indirect
+			r[ops[cl]]=r[ops[cl+1]];
+		break;
+		case 1: // float not set, indirect set
+			r[ops[cl]]=mem.dd[r[ops[cl+1]]];
+		break;
+		case 2: //float set, not direct
+			rf[ops[cl]]=rf[ops[cl+1]];
+		break;
+		case 3: //float and indirect set
+			rf[ops[cl]]=to_float(mem.dd[r[ops[cl+1]]]);
+		break;
 	}
-	
 	cl++;
 }
 
-
-void OpcodeProcessor::push_rrf(){
+void OpcodeProcessor::mov_Ur_Dimmd(){
 	cl++;
-	if((op_data[cl]&0x80)!=0){ //float register
-		push(*(uint32_t*)&rf[(op_data[cl]&0x7F)]); //clears off top bit
+	if(option_bit(ops[cl])){
+		//immd is pointer
+		r[ops[cl]]=mem.dd[to_int(ops[cl+1])];
 	}else{
-		push(r[op_data[cl]]);
+		r[ops[cl]]=to_int(ops[cl+1]);
 	}
-	
-}
-
-void OpcodeProcessor::pop_rrf(){
-	cl++;
-	if((op_data[cl]&0x80)!=0){ //float register
-		*(uint32_t*)&rf[(op_data[cl]&0x7F)]=pop();
-	}else{
-		r[op_data[cl]]=pop();
-	}
-	
-}
-
-
-void OpcodeProcessor::mov_rpif_immdimmf(){
-	cl++;
-	/*bool is_float=op_data[cl]&0x80;
-	if(is_float){ 
-		mem.dd[r[op_data[cl]]]=*(uint32_t*)&op_data[cl+1];
-	}else{*/
-	///It doesn't matter if it's a float or not, it's just memory.
-	mem.dd[r[op_data[cl]]]=*(uint32_t*)&op_data[cl+1];  
-	//}
 	cl+=4;
 }
-
-
-
-
-
-
-
 
 

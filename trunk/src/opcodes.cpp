@@ -40,7 +40,7 @@ using namespace std;
 
 
 OpcodeProcessor::OpcodeProcessor(void *opcode_data,uint32_t code_sz,uint32_t flags){
-	op_data=(uint8_t*)opcode_data;
+	ops=(uint8_t*)opcode_data;
 	cl=0;
 	tr=false;
 	sr=0x1000;
@@ -54,7 +54,7 @@ OpcodeProcessor::OpcodeProcessor(void *opcode_data,uint32_t code_sz,uint32_t fla
 	code_size=code_sz;
 	cout << "EBC file dump: " << endl;
 	for(uint32_t i=0;i<code_size;i++){
-		cout << "|"<<hex<<(int)op_data[i];
+		cout << "|"<<hex<<(int)ops[i];
 	}
 	cout <<endl;
 	
@@ -67,7 +67,7 @@ OpcodeProcessor::OpcodeProcessor(void *opcode_data,uint32_t code_sz,uint32_t fla
 
 OpcodeProcessor::~OpcodeProcessor(){
 	
-	delete []op_data;
+	delete []ops;
 }
 
 
@@ -76,27 +76,27 @@ void OpcodeProcessor::Cycle(){
 		EpbpException(CL_OVERRUN);
 	}
 //	cout <<hex << "CL: " << cl << " op_data " << hex<<(int)op_data[cl] << endl;
-	switch((uint8_t)op_data[cl]){
+	switch((uint8_t)ops[cl]){
 		case 0x00: //nop
 			cout << "nop" << endl;
 		break;
 		case 0xFE: //exit
 			EpbpException(MANUAL_EXIT);
 		break;
-		case 0x10: //mov r/fr,immd/immf
-			mov_rrf_immdimmf();
+		case 0x10: 
+			mov_Drf_immd();
 		break;
-		case 0x11: //mov r/rf,r/rf
-			mov_rrf_rrf();
+		case 0x11:
+			mov_Fr_Dr();
 		break;
-		case 0x12: //push rrf
-			push_rrf();
+		case 0x12:
+			mov_Ur_Dimmd();
 		break;
 		case 0x13: //pop rrf
-			pop_rrf();
+		//	pop_rrf();
 		break;
 		case 0x14: //mov [r],immd/f
-			mov_rpif_immdimmf();
+		//	mov_rpif_immdimmf();
 		break;
 		
 		case 0x50: //jmp immdc
@@ -109,22 +109,22 @@ void OpcodeProcessor::Cycle(){
 			jif_immdc();
 		break;
 		case 0x80: //cls rrf rrf
-			cls_rrf_rrf();
+		//	cls_rrf_rrf();
 		break;
 		case 0x81:
-			cle_rrf_rrf();
+		//	cle_rrf_rrf();
 		break;
 		case 0x82:
-			cgt_rrf_rrf();
+		//	cgt_rrf_rrf();
 		break;
 		case 0x83:
-			cge_rrf_rrf();
+		//	cge_rrf_rrf();
 		break;
 		case 0x84:
-			cne_rrf_rrf();
+		//	cne_rrf_rrf();
 		break;
 		case 0x85:
-			ceq_rrf_rrf();
+		//	ceq_rrf_rrf();
 		break;
 			
 		case 0x20:
@@ -134,7 +134,7 @@ void OpcodeProcessor::Cycle(){
 			ret();
 		break;
 		case 0xB0:
-			add_rrf_immdimmf();
+		//	add_rrf_immdimmf();
 		break;
 		
 		case 0xFF: //this is for debugging: this will dump the first 16 r and rf registers

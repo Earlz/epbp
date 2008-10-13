@@ -58,14 +58,18 @@ static const uint32_t MANUAL_EXIT=9;
 static const uint32_t BAD_OPCODE=10;
 
 
-void *LoadFile();
 
 class OpcodeProcessor;
 
 extern OpcodeProcessor cpu;
 
 
-
+#define option_bit(x) \
+	((x&0x80)>0)
+#define to_float(x) \
+	(*(float32_t*)&x)
+#define to_int(x) \
+	(*(uint32_t*)&x)
 
 
 
@@ -157,29 +161,7 @@ class FloatRegisterClass {
 extern RegisterClass r;
 extern FloatRegisterClass rf;
 
-class FloatIntRegisterClass{ //rrf functionality --automatically parse things.
-	
-	public:
-	uint32_t operator[](uint8_t n) const{
-		if((n&0x80)!=0){ //is float
-			return *(uint32_t*)&rf[n&0x7F];
-		}else{
-			return r[n];
-		}
-	}
-	FloatIntRegisterClass(){}
-	/*
-	uint32_t &operator[](uint8_t n){
-		if((n&0x80)!=0){ //is float?
-			return &(*(uint32_t*)&rf[n&0x7F]);
-		}else{
-			return &r[n];
-		}
-	}
-	*/
-};
 
-extern const FloatIntRegisterClass rrf;
 
 void EpbpException(uint32_t);
 
@@ -190,7 +172,7 @@ class Dump{
 
 class OpcodeProcessor{
 	uint32_t op_cache;
-	uint8_t *op_data;
+	uint8_t *ops;
 	volatile uint32_t cl; //current location
 	bool tr; //truth register
 	uint32_t sr; //Stack register
@@ -213,24 +195,24 @@ class OpcodeProcessor{
 	
 	protected:
 	/**See bottom of file for abreviation information on opcodes**/
-	void mov_rrf_immdimmf();
-	void mov_rrf_rrf();
-	void push_rrf();
-	void pop_rrf();
-	void mov_rpif_immdimmf();
+	void mov_Drf_immd();
+	void mov_Fr_Dr();
+	void push_Fr();
+	void pop_Fr();
+	void mov_Ur_Dimmd();
 	void jmp_immwc(); //not working
 	void jmp_immdc();
 	void jif_immdc();
 	void jit_immdc();	
-	void cls_rrf_rrf();
-	void cle_rrf_rrf();
-	void cgt_rrf_rrf();
-	void cge_rrf_rrf();
-	void cne_rrf_rrf();
-	void ceq_rrf_rrf();
+	void cls_Fr_SDr();
+	void cle_Fr_SDr();
+	void cgt_Fr_SDr();
+	void cge_Fr_SDr();
+	void cne_Fr_SDr();
+	void ceq_Fr_SDr();
 	void ret();
 	void call_immdc();
-	void add_rrf_immdimmf();
+	void add_Fr_immd();
 	
 	
 	
@@ -268,8 +250,6 @@ extern OpcodeProcessor cpu;
 
 
 /**Opcode Definitions**/
-
-void mov_rrf_immdimmf();
 
 
 
