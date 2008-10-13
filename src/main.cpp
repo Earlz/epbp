@@ -47,7 +47,7 @@ MemoryClass mem(0x10000,ebc_file.LoadData(),ebc_file.DataSize());
 RegisterClass r(&mem);
 FloatRegisterClass rf(&mem);
 OpcodeProcessor cpu(ebc_file.LoadCode(),ebc_file.CodeSize());
-const FloatIntRegisterClass rrf;
+
 
 
 
@@ -97,72 +97,7 @@ void EpbpException(uint32_t code){
 
 
 
-void bcve_test(uint32_t num){
-	uint32_t i;
-	cout << "Test Number "<<num << endl;
-	cout <<"BEGIN TESTING OUTPUT" << endl;
-	cout <<"--------------------" << endl;
-	switch(num){
-		case 0:
-			/**Proves that the db and dw conventions effectively bind 
-			data to there specified types.**/
-			/**Expected Output:
-			Hello There Mr. Worldg
-			aello There Mr. Worldg
-			aallo There Mr. Worldg
-			aaaao There Mr. Worldg
-			**/
-			for(i=0;i<32;i++){
-				cout << mem.db[i];
-			}
-			cout << endl;
-			mem.db[0]='a';
-			for(i=0;i<32;i++){
-				cout << mem.db[i];
-			}
-			cout << endl;
-			mem.dw[0]='aa';
-			for(i=0;i<32;i++){
-				cout << mem.db[i];
-			}
-			cout << endl;
-			mem.dd[0]='aaaa';
-			for(i=0;i<32;i++){
-				cout << mem.db[i];
-			}
-			cout << endl;
-		break;
-		
-		case 1:
-			/**Proves that registers and register banks write properly*/
-			/**Expected Output:
-			aaaaddddccccMr. Worldg
-			**/
-			r[0]='aaaa';
-			r[1]='bbbb';
-			r[2]='cccc';
-			r.SetBank(4);
-			r[0]='dddd';
-			for(i=0;i<32;i++){
-				cout << mem.db[i];
-			}
-			cout << endl;
-			break;
-		default:
-			cout <<"invalid test "<< endl;
-		break;
-		case 2:
-			rf[0]=10.0;
-			rf[1]=3.0;
-			rf[2]=rf[0]/rf[1];
-			cout <<"10/3 (in RF registers): "<< rf[2] << endl;
-		break;
-	}
-	
-	cout << "------------------" << endl;
-	cout << "END TESTING OUTPUT" << endl;
-	
-}
+
 
 
 
@@ -174,9 +109,7 @@ int main(void){
 	cout << "--Shadows EPBP Implementation--" << endl;
 	cout << "--<http://epbp.earlz.biz.tm>---" << endl;
 	cout << "-------------------------------" << endl;	
-	for(i=0;i<=2;i++){
-		bcve_test(i);
-	}
+	cout << endl <<">>>Beginning CPU emulation>>>" <<endl;
 	for(;;){
 		cpu.Cycle();
 	}

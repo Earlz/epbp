@@ -298,3 +298,30 @@ dd %2
 
 
 
+
+
+
+%macro mov_Drf_immd 3
+db 0x10
+db %2|(%1<<7)
+dd %3
+%endmacro
+
+
+%macro mov_Fr_Dr 4
+db 0x11
+db %2 | (%1 << 7)
+db %4 | (%3 << 7)
+%endmacro
+
+%macro mov_Ur_Dimmd 3
+db 0x12
+db %1 | (%2 << 7)
+dd %3
+%endmacro
+
+
+
+
+
+

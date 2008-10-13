@@ -47,7 +47,7 @@ void OpcodeProcessor::jmp_immwc(){
 
 
 void OpcodeProcessor::jmp_immdc(){
-	uint32_t ad=*(uint32_t*)&op_data[cl+1];
+	uint32_t ad=*(uint32_t*)&ops[cl+1];
 	
 	cl=ad;
 	cout << "cl="<<hex<<cl<<endl;
@@ -56,7 +56,7 @@ void OpcodeProcessor::jmp_immdc(){
 	
 void OpcodeProcessor::jit_immdc(){
 	if(tr==1){
-		cl=*(uint32_t*)&op_data[cl+1];
+		cl=*(uint32_t*)&ops[cl+1];
 		cl--;
 	}else{
 		cl+=4;
@@ -65,7 +65,7 @@ void OpcodeProcessor::jit_immdc(){
 void OpcodeProcessor::jif_immdc(){
 	
 	if(tr==0){
-		cl=*(uint32_t*)&op_data[cl+1];
+		cl=*(uint32_t*)&ops[cl+1];
 		cl--;
 	}else{
 		cl+=4;
@@ -77,7 +77,7 @@ void OpcodeProcessor::call_immdc(){
 	cl++;
 	//cout <<"t"<<endl;
 	PushCS(cl+4);
-	cl=*(uint32_t*)&op_data[cl];
+	cl=*(uint32_t*)&ops[cl];
 	cl--;
 }
 
