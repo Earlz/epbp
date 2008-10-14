@@ -37,7 +37,7 @@ void OpcodeProcessor::mov_Drf_immd(){
 	//note option bits are filtered out in the r and rf helper classes.
 	if(option_bit(ops[cl])){ //is a displacement
 		cout <<"t";
-		mem.dd[r[ops[cl]]]=ops[cl+1];
+		mem.dd[r[ops[cl]]]=to_int(ops[cl+1]);
 	}else{ //is a immediate to float mov
 		cout << "f";
 		rf[ops[cl]]=to_float(ops[cl+1]);
@@ -74,5 +74,30 @@ void OpcodeProcessor::mov_Ur_Dimmd(){
 	}
 	cl+=4;
 }
+
+
+void OpcodeProcessor::push_Fr(){
+	cl++;
+	if(option_bit(ops[cl])){
+		//float
+		push(to_int(rf[ops[cl]]));
+	}else{
+		push(r[ops[cl]]);
+	}
+}
+
+void OpcodeProcessor::pop_Fr(){
+	cl++;
+	if(option_bit(ops[cl])){
+		//float
+		to_int(rf[ops[cl]])=pop();
+	}else{
+		r[ops[cl]]=pop();
+	}
+}
+
+
+
+
 
 

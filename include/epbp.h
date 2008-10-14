@@ -56,6 +56,15 @@ static const uint32_t BAD_FILENAME=7;
 static const uint32_t CL_OVERRUN=8;
 static const uint32_t MANUAL_EXIT=9;
 static const uint32_t BAD_OPCODE=10;
+static const uint32_t BAD_COMPARISON=11;
+
+
+static const uint8_t COMPARE_EQ=0; //equal to
+static const uint8_t COMPARE_NT=1; //not equal
+static const uint8_t COMPARE_GE=2; //greater or equal
+static const uint8_t COMPARE_LE=3; //less or equal
+static const uint8_t COMPARE_GT=4; //greater than
+static const uint8_t COMPARE_LT=5; //less than
 
 
 
@@ -204,12 +213,7 @@ class OpcodeProcessor{
 	void jmp_immdc();
 	void jif_immdc();
 	void jit_immdc();	
-	void cls_Fr_SDr();
-	void cle_Fr_SDr();
-	void cgt_Fr_SDr();
-	void cge_Fr_SDr();
-	void cne_Fr_SDr();
-	void ceq_Fr_SDr();
+	void cxx_Fr_SDr(); //covers a set of cXX based opcodes for comparisons.
 	void ret();
 	void call_immdc();
 	void add_Fr_immd();
@@ -249,7 +253,9 @@ extern MemoryClass mem;
 extern OpcodeProcessor cpu;
 
 
-/**Opcode Definitions**/
+bool CompareUnsigned(uint32_t x,uint32_t y, uint8_t compare);
+bool CompareSigned(int32_t x,int32_t y, uint8_t compare);
+bool CompareFloat(float32_t x,float32_t y, uint8_t compare);
 
 
 
@@ -278,6 +284,9 @@ U means unallocated option bit. If an option bit is later used such as on an imm
 B means byte. Note, this can only be used with indirect addressing. if set, then the address holds a byte, else holds a dword(the default and assumed type)
 W means word. This can only be used with indirect addressing. If set, the address holds a word, else holds a dword.
 Z means byte-word flipping of size. If set, then the address holds a byte, else it holds a word.
+
+If D is encoded in the opcode, then B or W or Z can also be an option to choose how big the memory addressed operand is.
+This can be done in a pop like this pop_D_Br which would be pop (byte/dword) [rx]
 
 
 Code address options:

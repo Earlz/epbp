@@ -92,9 +92,14 @@ void OpcodeProcessor::Cycle(){
 		case 0x12:
 			mov_Ur_Dimmd();
 		break;
-		case 0x13: //pop rrf
-		//	pop_rrf();
+		case 0x30:
+			push_Fr();
 		break;
+		case 0x31:
+			pop_Fr();
+		break;
+		
+		
 		case 0x14: //mov [r],immd/f
 		//	mov_rpif_immdimmf();
 		break;
@@ -109,22 +114,12 @@ void OpcodeProcessor::Cycle(){
 			jif_immdc();
 		break;
 		case 0x80: //cls rrf rrf
-		//	cls_rrf_rrf();
-		break;
 		case 0x81:
-		//	cle_rrf_rrf();
-		break;
 		case 0x82:
-		//	cgt_rrf_rrf();
-		break;
 		case 0x83:
-		//	cge_rrf_rrf();
-		break;
 		case 0x84:
-		//	cne_rrf_rrf();
-		break;
 		case 0x85:
-		//	ceq_rrf_rrf();
+		cxx_Fr_SDr();
 		break;
 			
 		case 0x20:
@@ -134,7 +129,7 @@ void OpcodeProcessor::Cycle(){
 			ret();
 		break;
 		case 0xB0:
-		//	add_rrf_immdimmf();
+			add_Fr_immd();
 		break;
 		
 		case 0xFF: //this is for debugging: this will dump the first 16 r and rf registers
@@ -191,7 +186,92 @@ uint32_t OpcodeProcessor::pop(){
 }
 
 
+bool CompareUnsigned(uint32_t x,uint32_t y, uint8_t compare){
+	switch(compare){
+		case COMPARE_EQ:
+			return x==y;
+		break;
+		case COMPARE_NT:
+			return x!=y;
+		break;
+		case COMPARE_GE:
+			return x>=y;
+		break;
+		case COMPARE_LE:
+			return x<=y;
+		break;
+		case COMPARE_GT:
+			return x>y;
+		break;
+		case COMPARE_LT:
+			return x<y;
+		break;
+		default:
+			EpbpException(BAD_COMPARISON);
+		break;
+		
+	}
+	return 0; //avoids warnings
+	
+}
 
+bool CompareSigned(int32_t x,int32_t y, uint8_t compare){
+	switch(compare){
+		case COMPARE_EQ:
+			return x==y;
+			break;
+		case COMPARE_NT:
+			return x!=y;
+			break;
+		case COMPARE_GE:
+			return x>=y;
+			break;
+		case COMPARE_LE:
+			return x<=y;
+			break;
+		case COMPARE_GT:
+			return x>y;
+			break;
+		case COMPARE_LT:
+			return x<y;
+			break;
+		default:
+			EpbpException(BAD_COMPARISON);
+			break;
+	}
+	return 0; //avoids warnings
+	
+	
+}
+
+bool CompareFloat(float32_t x,float32_t y,uint8_t compare){
+	switch(compare){
+		case COMPARE_EQ:
+			return x==y;
+			break;
+		case COMPARE_NT:
+			return x!=y;
+			break;
+		case COMPARE_GE:
+			return x>=y;
+			break;
+		case COMPARE_LE:
+			return x<=y;
+			break;
+		case COMPARE_GT:
+			return x>y;
+			break;
+		case COMPARE_LT:
+			return x<y;
+			break;
+		default:
+			EpbpException(BAD_COMPARISON);
+			break;
+	}
+	
+	
+	return 0; //avoids warnings
+}
 
 
 
