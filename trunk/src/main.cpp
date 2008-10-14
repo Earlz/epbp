@@ -104,7 +104,7 @@ void EpbpException(uint32_t code){
 
 
 int main(void){
-	int i;
+
 	cout << "-------------------------------" << endl;
 	cout << "--Shadows EPBP Implementation--" << endl;
 	cout << "--<http://epbp.earlz.biz.tm>---" << endl;

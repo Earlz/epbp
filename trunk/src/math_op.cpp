@@ -39,6 +39,19 @@ and subtracting**/
 #include <epbp.h>
 
 
+void OpcodeProcessor::add_Fr_immd(){
+	cl++;
+	if(option_bit(ops[cl])){
+		//float
+		rf[ops[cl]]+=to_float(ops[cl+1]);
+	}else{
+		r[ops[cl]]+=to_int(ops[cl+1]);
+	}
+	cl+=4;
+}
+
+
+
 
 
 

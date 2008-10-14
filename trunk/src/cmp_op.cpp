@@ -38,7 +38,29 @@ and modifying the TR register**/
 
 #include <epbp.h>
 
-
+void OpcodeProcessor::cxx_Fr_SDr(){
+	uint8_t compare=ops[cl]-0x80;
+	cl++;
+	switch((option_bit(ops[cl]) << 1) | option_bit(ops[cl+1])){
+		case 0: //not float, not signed
+			tr=CompareUnsigned(r[ops[cl]],r[ops[cl+1]],compare);
+		break;
+		case 1: //not float, signed
+			tr=CompareSigned(r[ops[cl]],r[ops[cl+1]],compare);
+		break;
+		case 2: //float, not indirect
+			tr=CompareFloat(rf[ops[cl]],rf[ops[cl+1]],compare);
+		break;
+		case 3: //float, indirect
+			tr=CompareFloat(rf[ops[cl]],to_float(mem.dd[r[cl+1]]),compare);
+		break;
+		default: //should be impossible, but just in case
+			tr=0;
+		break;
+	}
+	cl++;
+	
+}
 
 
 

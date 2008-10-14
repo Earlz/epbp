@@ -60,9 +60,31 @@ ebc_header_end:
 
 code_start:
 
-mov_Ur_Dimmd 0,0,0x11223344
+mov_Ur_Dimmd 0,0,0xFF00
+mov_Ur_Dimmd 2,0,0xFF02
 
-;mov_Drf_immd 1,0,0x11223344
+mov_Fr_Dr 0,1,0,2
+mov_Fr_Dr 0,3,0,0
+
+mov_Drf_immd 0,2,2.51
+mov_Fr_Dr 1,0,0,2
+
+push_Fr 0,0
+push_Fr 1,0
+pop_Fr 1,6
+pop_Fr 0,6
+
+mov_Ur_Dimmd 0,0,12
+mov_Ur_Dimmd 2,0,10
+
+mov_Drf_immd 0,0,12.0
+mov_Drf_immd 0,2,10.0
+
+cxx_Fr_SDr CGT,1,0,0,2 ;r0,r2
+
+add_Fr_immd 0,0,2 
+add_Fr_immd 1,0,2.5
+
 
 dmp
 

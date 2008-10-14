@@ -33,42 +33,13 @@
 ;;This file contains macros for the EPBP opcode definitions. Note, these are very machine-level macros.
 %xdefine HEADER_SIZE (7*4)
 
+%xdefine CEQ 0
+%xdefine CNT 1
+%xdefine CGE 2
+%xdefine CLE 3
+%xdefine CGT 4
+%xdefine CLT 5
 
-%macro mov_r_immd 2
-	db 0x10
-	db %1
-	dd %2
-%endmacro
-
-%macro mov_rf_immf 2
-db 0x10
-db (%1)+128
-dd %2
-%endmacro
-
-%macro mov_r_r 2
-db 0x11
-db %1
-db %2
-%endmacro
-
-%macro mov_rf_r 2
-db 0x11
-db %1+128
-db %2
-%endmacro
-
-%macro mov_r_rf 2
-db 0x11
-db %1
-db %2+128
-%endmacro
-
-%macro mov_rf_rf 2
-db 0x11
-db %1+128
-db %2+128
-%endmacro
 
 %macro nop 0
 db 0x00
@@ -82,31 +53,6 @@ db 0xFE
 db 0xFF
 %endmacro
 
-%macro push_r 1
-db 0x12
-db %1
-%endmacro
-
-%macro push_rf 1
-db 0x12
-db %1+128
-%endmacro
-
-%macro pop_r 1
-db 0x13
-db %1
-%endmacro
-
-%macro pop_rf 1
-db 0x13
-db %1+128
-%endmacro
-
-%macro mov_rpif_immdf 2
-db 0x14
-db %1
-dd %2
-%endmacro
 
 %macro invld 0
 db 0xBA
@@ -127,149 +73,6 @@ db 0x61
 dd %1-HEADER_SIZE
 %endmacro
 
-%macro cls_r_r 2
-db 0x80
-db %1
-db %2
-%endmacro
-
-%macro cls_rf_rf 2
-db 0x80
-db %1+128
-db %2+128
-%endmacro
-
-%macro cls_r_rf 2
-db 0x80
-db %1
-db %2+128
-%endmacro
-
-%macro cls_rf_r 2
-db 0x80
-db %1+128
-db %2
-%endmacro
-;;;;;;
-%macro cle_r_r 2
-db 0x81
-db %1
-db %2
-%endmacro
-
-%macro cle_rf_rf 2
-db 0x81
-db %1+128
-db %2+128
-%endmacro
-
-%macro cle_r_rf 2
-db 0x81
-db %1
-db %2+128
-%endmacro
-
-%macro cle_rf_r 2
-db 0x81
-db %1+128
-db %2
-%endmacro
-;;;;;;
-%macro cgt_r_r 2
-db 0x82
-db %1
-db %2
-%endmacro
-
-%macro cgt_rf_rf 2
-db 0x82
-db %1+128
-db %2+128
-%endmacro
-
-%macro cgt_r_rf 2
-db 0x82
-db %1
-db %2+128
-%endmacro
-
-%macro cgt_rf_r 2
-db 0x82
-db %1+128
-db %2
-%endmacro
-;;;;;;
-%macro cge_r_r 2
-db 0x83
-db %1
-db %2
-%endmacro
-
-%macro cge_rf_rf 2
-db 0x83
-db %1+128
-db %2+128
-%endmacro
-
-%macro cge_r_rf 2
-db 0x83
-db %1
-db %2+128
-%endmacro
-
-%macro cge_rf_r 2
-db 0x83
-db %1+128
-db %2
-%endmacro
-;;;;;;
-%macro cne_r_r 2
-db 0x84
-db %1
-db %2
-%endmacro
-
-%macro cne_rf_rf 2
-db 0x84
-db %1+128
-db %2+128
-%endmacro
-
-%macro cne_r_rf 2
-db 0x84
-db %1
-db %2+128
-%endmacro
-
-%macro cne_rf_r 2
-db 0x84
-db %1+128
-db %2
-%endmacro
-;;;;;;
-%macro ceq_r_r 2
-db 0x85
-db %1
-db %2
-%endmacro
-
-%macro ceq_rf_rf 2
-db 0x85
-db %1+128
-db %2+128
-%endmacro
-
-%macro ceq_r_rf 2
-db 0x85
-db %1
-db %2+128
-%endmacro
-
-%macro ceq_rf_r 2
-db 0x85
-db %1+128
-db %2
-%endmacro
 ;;;;;;
 
 %macro call_immdc 1
@@ -281,17 +84,7 @@ dd %1-HEADER_SIZE
 db 0xE0
 %endmacro
 
-%macro add_r_immd 2
-db 0xB0
-db %1
-dd %2
-%endmacro
 
-%macro add_rf_immf 2
-db 0xB0
-db %1+128
-dd %2
-%endmacro
 
 
 
@@ -319,6 +112,30 @@ db 0x12
 db %1 | (%2 << 7)
 dd %3
 %endmacro
+
+%macro push_Fr 2
+db 0x30
+db %2 | (%1 << 7)
+%endmacro
+
+%macro pop_Fr 2
+db 0x31
+db %2 | (%1 << 7)
+%endmacro
+
+%macro cxx_Fr_SDr 5
+db 0x80+ %1
+db %3 | (%2 << 7)
+db %5 | (%4 << 7)
+%endmacro
+
+%macro add_Fr_immd 3
+db 0xB0
+db %2 | (%1 << 7)
+dd %3
+%endmacro
+
+
 
 
 
