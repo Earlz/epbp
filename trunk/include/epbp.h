@@ -44,6 +44,11 @@ using namespace std;
 
 //config
 static const uint32_t CALLSTACK_SIZE=512;
+static const uint32_t EBC_FORMAT_VERSION=0x0002;
+static const uint32_t EPBP_BYTECODE_VERSION=0x0001;
+static const uint32_t EBC_VERSION=(EBC_FORMAT_VERSION <<16) | EPBP_BYTECODE_VERSION;
+
+
 
 
 static const uint32_t MEMORY_FAULT=1;
@@ -58,6 +63,8 @@ static const uint32_t MANUAL_EXIT=9;
 static const uint32_t BAD_OPCODE=10;
 static const uint32_t BAD_COMPARISON=11;
 static const uint32_t DIVIDE_BY_ZERO=12;
+static const uint32_t INVALID_EBC_FILE=13;
+static const uint32_t OUTDATED_IMPLEMENTATION=14;
 
 
 
@@ -235,7 +242,9 @@ class OpcodeProcessor{
 
 class EPBPFile{
 	ifstream file;
+	uint32_t EPBP_;
 	uint32_t version;
+	uint32_t generator;
 	uint32_t code_start;
 	uint32_t code_size;
 	uint32_t data_start;
