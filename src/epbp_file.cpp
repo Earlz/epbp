@@ -40,15 +40,35 @@ EPBPFile::EPBPFile(char* name){
 	}
 	uint32_t header[6];
 			
-	file.read((char*)&header,6*4);
-	version=header[0];
-	code_start=header[1];
-	code_size=header[2]-code_start;
-	data_start=header[3];
-	data_size=header[4]-data_start;
-	extra_space=header[5];
+	file.read((char*)&header,8*4);
+	int i=0;
+	EPBP_=header[i];
+	if(EPBP_!=0x50425045){ //hex for 'EPBP'
+		cout <<"i" << hex << EPBP_;
+		EpbpException(INVALID_EBC_FILE);
+	}
+	i++;
+	version=header[i];
+	if(version!=EBC_VERSION){
+		cout << "v";
+		EpbpException(OUTDATED_IMPLEMENTATION);
+	}
+	i++;
+	generator=header[i];
+	i++;
+	code_start=header[i];
+	i++;
+	code_size=header[i]-code_start;
+	i++;
+	data_start=header[i];
+	i++;
+	data_size=header[i]-data_start;
+	i++;
+	extra_space=header[i];
 	cout << "EBC File:        "<<name << endl;
 	cout << "--EBC Format Details--" << endl;
+	cout << "version num:      0x" << hex << version << endl;
+	cout << "generator:        0x" << hex << generator << endl;
 	cout << "code start :      0x" << hex << code_start <<endl;
 	cout << "code size:        0x" << hex << code_size << endl;
 	cout << "data start:       0x" << hex << data_start << endl;

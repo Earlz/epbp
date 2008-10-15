@@ -38,16 +38,20 @@
 
 EPBP_header:
 ;in format of 
-;dd version (currently 0x0000F001
+;db[4] the three characters 'EPBP'
+;dd version of EBC format | version of bytecode. Currently 0x00020001
+;dd Code generator ID. (optional, but can be used for optimizations). Shadows is 0x1000F001
 ;dd code segment start
 ;dd code segment end
 ;dd data segment start
 ;dd data segment end
-;dd space after data segment to load 
+;dd Heap size(after initial data segment). 
 ;dd <reserved>
 org 0
-ebc_header:
-dd 0x0000F001 
+EBC_header:
+db 'E','P','B','P'
+dd 0x00020001
+dd 0x1000F001
 dd code_start
 dd code_end
 dd data_start
@@ -55,8 +59,9 @@ dd data_end
 dd 0 ;amount of memory
 dd 0 ;reserved
 
-ebc_header_end:
+EBC_header_end:
 ;this gap is ignored, so any extra "hidden" information can be put here
+db "Test file for the Shadows EPBP implementation",0
 
 code_start:
 
@@ -94,7 +99,7 @@ exit
 code_end:
 
 data_start:
-
+times 256 dd 0 ;initial register area is cleared with 0s
 db "Hello There Mr. Worldgdb."
 data_end:
 
