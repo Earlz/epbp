@@ -57,6 +57,8 @@ static const uint32_t CL_OVERRUN=8;
 static const uint32_t MANUAL_EXIT=9;
 static const uint32_t BAD_OPCODE=10;
 static const uint32_t BAD_COMPARISON=11;
+static const uint32_t DIVIDE_BY_ZERO=12;
+
 
 
 static const uint8_t COMPARE_EQ=0; //equal to
@@ -217,6 +219,10 @@ class OpcodeProcessor{
 	void ret();
 	void call_immdc();
 	void add_Fr_immd();
+	void sub_Fr_immd();
+	void mul_Fr_immd();
+	void div_Fr_immd();
+	void mod_Dr_immd();
 	
 	
 	
