@@ -131,6 +131,18 @@ void OpcodeProcessor::Cycle(){
 		case 0xB0:
 			add_Fr_immd();
 		break;
+		case 0xB1:
+			sub_Fr_immd();
+		break;
+		case 0xB2:
+			mul_Fr_immd();
+		break;
+		case 0xB3:
+			div_Fr_immd();
+		break;
+		case 0xB4:
+			mod_Dr_immd();
+		break;
 		
 		case 0xFF: //this is for debugging: this will dump the first 16 r and rf registers
 			int i;

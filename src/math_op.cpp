@@ -50,10 +50,63 @@ void OpcodeProcessor::add_Fr_immd(){
 	cl+=4;
 }
 
+void OpcodeProcessor::sub_Fr_immd(){
+	cl++;
+	if(option_bit(ops[cl])){
+		//float
+		rf[ops[cl]]-=to_float(ops[cl+1]);
+	}else{
+		r[ops[cl]]-=to_int(ops[cl+1]);
+	}
+	cl+=4;
+}
+
+void OpcodeProcessor::mul_Fr_immd(){
+	cl++;
+	if(option_bit(ops[cl])){
+		//float
+		rf[ops[cl]]*=to_float(ops[cl+1]);
+	}else{
+		r[ops[cl]]*=to_int(ops[cl+1]);
+	}
+	cl+=4;
+}
 
 
+void OpcodeProcessor::div_Fr_immd(){
+	cl++;
+	if(option_bit(ops[cl])){
+		//float
+		if(to_float(ops[cl+1])==0.0){
+			EpbpException(DIVIDE_BY_ZERO);
+		}
+		rf[ops[cl]]/=to_float(ops[cl+1]);
+	}else{
+		if(to_int(ops[cl+1])==0){
+			EpbpException(DIVIDE_BY_ZERO);
+		}
+		r[ops[cl]]/=to_int(ops[cl+1]);
+	}
+	cl+=4;
+}
 
 
+void OpcodeProcessor::mod_Dr_immd(){
+	cl++;
+	if(option_bit(ops[cl])){
+		//indirect
+		if(to_int(ops[cl+1])==0.0){
+			EpbpException(DIVIDE_BY_ZERO);
+		}
+		mem.dd[r[ops[cl]]]%=to_int(ops[cl+1]);
+	}else{
+		if(to_int(ops[cl+1])==0){
+			EpbpException(DIVIDE_BY_ZERO);
+		}
+		r[ops[cl]]%=to_int(ops[cl+1]);
+	}
+	cl+=4;
+}
 
 
 
