@@ -34,31 +34,12 @@ This file is part of the EPBP project
 */
 
 
-#include <easm.h>
+#include <plasm.h>
 
-RegEx reg("gr[ae]y");
 
 
 int main(){
-	string pattern;
-	uint32_t i;
-	cout <<"Hi World!"<<endl;
-	cout <<reg.match("grey gray") <<endl;
-	for(i=0;i<=4;i++){
-		cout << reg[i]<<endl;
-	}
-	cout <<"Regular Expression: ";
-	pattern.reserve(256);
-	getline(cin,pattern);
-	RegEx re2(pattern);
-	cout <<endl;
-	cout <<"Search Text: ";
-	getline(cin,pattern);
-	cout <<"Number of matches: "<<re2.match(pattern) <<endl;
-	cout <<"Match List: (new line terminated)" <<endl;
-	for(i=0;i<=re2.number_matches();i++){
-		cout <<re2[i]<<endl;
-	}
+
 	cout <<"---End of output---"<<endl;
 }
 
