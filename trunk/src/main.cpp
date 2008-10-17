@@ -95,7 +95,11 @@ void EpbpException(uint32_t code){
 
 
 
-
+void test1(XModule x){
+	cout << x.name() << endl;
+	
+	
+}
 
 
 
@@ -109,6 +113,11 @@ int main(void){
 	cout << "--Shadows EPBP Implementation--" << endl;
 	cout << "--<http://epbp.earlz.biz.tm>---" << endl;
 	cout << "-------------------------------" << endl;	
+	XCore xc;
+	XModule xm;
+	test1(xc);
+	test1(xm); //Works!
+	
 	cout << endl <<">>>Beginning CPU emulation>>>" <<endl;
 	for(;;){
 		cpu.Cycle();
