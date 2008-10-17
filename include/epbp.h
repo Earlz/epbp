@@ -272,6 +272,45 @@ bool CompareUnsigned(uint32_t x,uint32_t y, uint8_t compare);
 bool CompareSigned(int32_t x,int32_t y, uint8_t compare);
 bool CompareFloat(float32_t x,float32_t y, uint8_t compare);
 
+class XModule{
+	protected:
+		string name_;
+	public:
+	XModule(){
+		name_="<blank>";
+	}
+	~XModule(){}
+	bool good(){return 0;}
+	uint32_t version(){return 0;}
+	uint32_t privledge(){return 0;}
+	string name(){return name_;}
+	void Xcall(uint32_t func){}
+};
+	
+class XCore : public XModule{
+	
+	public:
+	XCore(){
+	name_="core";}
+	~XCore(){}
+	bool good(){return 0;}
+	uint32_t version(){return 0;}
+	uint32_t privledge(){return 0;}
+
+	void Xcall(uint32_t func){}
+};
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -363,6 +402,14 @@ cgt_S_Ur_XS_Bimmp
 
 
 
+
+Priviledges.
+There are 5 priviledge levels.
+Level 0: Complete control. This mode is currently not used.
+level 1: Control over the EPBP Interpretor/compiler. This is used by EPBP self-hosting extensions. It allows by the "priv1" instruction access to the call stack, CL, and other such things. (this mode should be used with caution cause crashes are possible along with very unportable EPBP code)
+level 2: This is where applications run. Full filesystem I/O and can access most any extension. CL and the call stack is not accessible and data addresses are safe-checked. code addresses should be checked once, but acceptable to not be.
+level 3: This is where "unsafe" applications run. This can include certain IBAs(in browser applications) but is unsafe to use for ever IBA. It is basically like level 2, but with less extensions.
+level 4: The most insecure level. In this level it is assumed the application attempts to exploit the system and precautions are taken. All data addresses are checked. Code addresses may be checked more than once. Any filesystem I/O is chrooted. No raw device access is allowed. This is where IBAs should run. The most priveldged thing allowed is access to the browsers graphic area.(and even this is sometimes limited)
 
 
 
