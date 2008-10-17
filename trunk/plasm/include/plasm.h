@@ -32,39 +32,15 @@ This file is part of the EPBP project
 
 
 
-#ifndef EASM_H
-#define EASM_H
+#ifndef PLASM_H
+#define PLASM_H
 
 #include <iostream>
-#include <regex.h>
+
 #include <string>
 
 using namespace std;
 
-static const uint32_t REGEX_MAX=64; //maximum number of regular expressions per match(by default)
-
-
-
-/**Regular Expression Syntax Rules**/
-static const string label_decl_re_pattern="_[a-zA-Z0-9_]*: "; //label declaration
-static const string label_re_pattern="_[a-zA-Z0-9_]* "; //label usage(as a variable)
-static const string register_re_pattern="(?=,)?r[0-9]{1,3}(?=,)?(?![A-Za-z0-9_])"; //register usage
-static const string bracket_begin_re_pattern="[\\,\\s]?[\\[]"; //begining of a derefernce ([)
-static const string bracket_end_re_pattern="[\\]][\\,\\s]?"; //ending of derefernce (])
-
-static const string expression_re_pattern=
-	"[\\,\\s][0-9\\*\\-\\/\\%\\(\\)\\~\\^\\&\\+\\<\\>\\|]+"; //any constant number or constant expression such as 2*(3+2)
-
-
-
-/**Instruction Syntax's**/
-static const string mov_re_pattern="mov\\s"; //mov
-
-
-
-/**Expression syntax REs (those used by the expression evaluater**/
-
-static const string mulexp_pattern="*";
 
 
 
@@ -86,28 +62,6 @@ mov r0_, r0p
 
 
 */
-
-
-
-
-
-class RegEx{
-	regex_t re;
-	regmatch_t ma;
-	string *matches;
-	uint32_t matches_limit;
-	bool no_match;
-	uint32_t *matches_pos;
-	
-	public:
-	RegEx(string pattern,int cflags=REG_EXTENDED);
-	~RegEx();
-	string operator[](uint32_t) const;
-	int32_t match(string test,uint32_t max=REGEX_MAX,int flags=0); //returns number of matches
-	void free(); //This will free memory from the last match.
-	uint32_t number_matches();
-	uint32_t match_pos(uint32_t n);
-};
 
 
 

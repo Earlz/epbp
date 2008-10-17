@@ -27,12 +27,11 @@
 #
 #This file is part of the EPBP project
 #</Copyright Header>
-_OBJS=objs/main.o objs/regex.o
+_OBJS=objs/main.o
 debug_CPPFLAGS=-Wall -pedantic -g -I./include
 
 default:
 		g++ $(debug_CPPFLAGS) -c src/main.cpp -o objs/main.o
-		g++ $(debug_CPPFLAGS) -c src/regex.cpp -o objs/regex.o
 		g++ $(debug_CPPFLAGS) -o bin/easm $(_OBJS)
 		
 		
