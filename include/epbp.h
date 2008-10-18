@@ -287,18 +287,10 @@ class XModule{
 	void Xcall(uint32_t func){}
 };
 	
-class XCore : public XModule{
-	
-	public:
-	XCore(){
-	name_="core";}
-	~XCore(){}
-	bool good(){return 0;}
-	uint32_t version(){return 0;}
-	uint32_t privledge(){return 0;}
+class XCore : public XModule{};
 
-	void Xcall(uint32_t func){}
-};
+
+
 
 
 

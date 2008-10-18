@@ -14,6 +14,4 @@ file:///home/earlz/epbp/src/float_op.cpp
 file:///home/earlz/epbp/src/flow_op.cpp
 file:///home/earlz/epbp/src/sys_op.cpp
 file:///home/earlz/epbp/src/math_op.cpp
-file:///home/earlz/epbp/plasm/makefile
-file:///home/earlz/epbp/plasm/src/main.cpp
-file:///home/earlz/epbp/plasm/include/plasm.h
+file:///home/earlz/epbp/src/xmod.cpp
