@@ -95,7 +95,7 @@ void EpbpException(uint32_t code){
 
 
 
-void test1(XModule x){
+void test1(XModule &x){
 	cout << x.name() << endl;
 	
 	
@@ -114,7 +114,7 @@ int main(void){
 	cout << "--<http://epbp.earlz.biz.tm>---" << endl;
 	cout << "-------------------------------" << endl;	
 	XCore xc;
-	XModule xm;
+	XModule xm(0);
 	test1(xc);
 	test1(xm); //Works!
 	
