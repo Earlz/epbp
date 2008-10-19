@@ -75,7 +75,12 @@ static const uint8_t COMPARE_LE=3; //less or equal
 static const uint8_t COMPARE_GT=4; //greater than
 static const uint8_t COMPARE_LT=5; //less than
 
-
+static const uint8_t PLEVEL0=1;
+static const uint8_t PLEVEL1=2;
+static const uint8_t PLEVEL2=4;
+static const uint8_t PLEVEL3=8;
+static const uint8_t PLEVEL4=16;
+static const uint8_t PLEVEL_IBA=32; 
 
 class OpcodeProcessor;
 
@@ -275,21 +280,39 @@ bool CompareFloat(float32_t x,float32_t y, uint8_t compare);
 class XModule{
 	protected:
 		string name_;
+		uint32_t version_;
 	public:
 	XModule(){
+	}
+	XModule(uint32_t args){
 		name_="<blank>";
 	}
 	~XModule(){}
 	bool good(){return 0;}
-	uint32_t version(){return 0;}
+	uint32_t version(){return version_;}
 	uint32_t privledge(){return 0;}
 	string name(){return name_;}
-	void Xcall(uint32_t func){}
+	void Xcall(OpcodeProcessor cpu,uint32_t func){}
 };
 	
-class XCore : public XModule{};
+class XCore : public XModule{
+	public:
 
 
+};
+
+class XList{
+	protected:
+	
+	
+	public:
+	
+	bool load(uint32_t num,uint32_t args);
+	
+	
+	
+	
+};
 
 
 
