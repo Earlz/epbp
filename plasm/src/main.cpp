@@ -36,12 +36,60 @@ This file is part of the EPBP project
 
 #include <plasm.h>
 
+void PlasmException(uint32_t code){
+	cout << "PLASM EXCEPTION"<<endl;
+	
+	exit(1);
+}
+
+
+
+
+
+
+
+
+
+
 
 
 int main(){
+	ifstream file;
+	file.open("test.asm");
+	if(file.good()==0){
+		return 1;
+	}
+	Parser p(file);
+	
+	cout << p[0]<<endl;
+	cout <<p[1]<<endl;
+	cout <<p[2]<<endl;
+	
 
 	cout <<"---End of output---"<<endl;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
