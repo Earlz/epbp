@@ -30,89 +30,62 @@ This file is part of the EPBP project
 </Copyright Header>
 */
 
+#include <plasm.h>
+
+Parser::Parser(istream &inf){
+	str=new string[MAX_LINES];
+	uint32_t i=0;
+	for(i=0;i<MAX_LINES;i++){
+		if(inf.eof()==1){
+			break;
+		}
+		std::getline(inf,str[i]);
+	}
+	line=0;
+	limit=i;
+}
+
+void Parser::setline(uint32_t num){
+	if(num>limit){
+		PlasmException(0);
+	}
+	line=num;
+}
 
 
-#ifndef PLASM_H
-#define PLASM_H
 
-#include <iostream>
-#include <fstream>
-#include <string>
-using namespace std;
+string Parser::operator[](uint32_t num){
+	uint32_t i;
+	uint32_t first=str[line].find_first_not_of(" \n\t\r\b");
+	if(first==string::npos){
+		return "";
+	}
+	/*if(num==0){
+		return str[line].substr(first,str[line].find_first_of(" \n\t\r\b,"));
+	}*/
+	uint32_t last=first;
+	first=0;
+	string used=str[line];
+	for(i=0;i<=num;i++){
+		cout <<"used: "<<used <<endl;
+		cout <<"last: "<<last <<endl;
+		used=used.erase(0,last+first);
+		cout <<"-used: "<<used <<endl;
+		last=used.find_first_of(" \n\t\r\b");
+		first=used.find_first_not_of(" \n\t\r\b");
+		last++;
+		if(used[last]==','){ last--;}	
+	}
+	cout <<"---"<<used.substr(0,last-1)<<"|"<<endl;
+		return used.substr(0,last-1);
+
+}
 
 
-static const uint32_t MAX_LINES=4096;
-
-
-
-void PlasmException(uint32_t code);
-
-
-class Parser{	
-	string *str;
-	uint32_t line;
-	uint32_t limit;
-	public:
-	Parser(istream &inf);
-	void setline(uint32_t num); //tells it to operate on this line of the file.
-	string operator[](uint32_t n); //this returns a "word" out of the current string.
-	string getline(uint32_t num); //get a whole line, unfiltered.
 	
-	
-	
-	
-};
 
 
 
 
 
-
-
-
-
-
-
-/**Intended matching:
-Registers: (where it would match the r0 part and only the r0 part)
-matches:
-mov r0,r0
-mov r0 , r0
-mov r0,1
-mov    r0     ,     r0    
-
-not-matches:
-mov r0a,r0b
-mov r01234,r01234
-mov r0_, r0p
-
-
-
-
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#endif
 
