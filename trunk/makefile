@@ -81,13 +81,33 @@ flow_op.cpp:
 xmod.cpp:
 	g++ $(CPPFLAGS) -c src/xmod.cpp -o objs/xmod.o
 
-link:
-	g++ $(CPPFLAGS) -o bin/epbp $(_OBJS)
+
 
 
 clean:
 	rm -f $(_OBJS)
 	
+
+
+_MODULE_OBJS=objs/xmodules/core.o
+
+modules_core.cpp:
+	g++ $(CPPFLAGS) -c xmodules/core.cpp -o objs/xmodules/core.o
+	
+
+
+
+
+
+
+
+modules: sys_op.cpp xmod.cpp modules_core.cpp
+
+
+link:
+	g++ $(CPPFLAGS) -o bin/epbp $(_OBJS) $(_MODULE_OBJS)
+	
+
 	
 .PHONY: opcodes modules asm system
 
@@ -95,11 +115,13 @@ clean:
 	
 opcodes: opcodes.cpp store_op.cpp cmp_op.cpp bitwise_op.cpp float_op.cpp sys_op.cpp flow_op.cpp math_op.cpp
 
-modules: sys_op.cpp xmod.cpp
+
 
 asm: test_op.asm
 
 system: main.cpp bcve.cpp epbp_file.cpp
+
+
 
 
 

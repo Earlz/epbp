@@ -85,7 +85,7 @@ static const uint8_t PLEVEL3=8;
 static const uint8_t PLEVEL4=16;
 static const uint8_t PLEVEL_IBA=32; 
 
-
+static const uint8_t PLEVEL_ALL=PLEVEL0|PLEVEL1|PLEVEL2|PLEVEL3|PLEVEL4|PLEVEL_IBA;
 
 
 

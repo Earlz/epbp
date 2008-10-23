@@ -56,18 +56,18 @@ class XModule{
 		string name_;
 		uint32_t version_;
 		bool good_;
-		uint32_t priveldge_;
+		uint32_t privilege_;
 	public:
 		XModule(){
 			good_=0;
-			priveldge_=0;
+			privilege_=0;
 			version_=0;
 			name_="<blank>";
 		}
 		~XModule(){}
 		bool good(){return good_;}
 		uint32_t version(){return version_;}
-		uint32_t privledge(){return priveldge_;}
+		uint32_t privilege(){return privilege_;}
 		string name(){return name_;}
 		void Xcall(OpcodeProcessor &cpu,uint32_t func){} //only should work if init called before-hand.
 		void init(uint32_t args){} //will initalize the module for Xcall use.
@@ -76,15 +76,21 @@ class XModule{
 	
 	
 	
+/**Insert module class definitions here**/
+
 class XCore : public XModule{
 	public:
-		XCore(){
-			name_="core";
-			version_=1; //0x00 00 01
-		}
-		bool good(){return 1;}
-
+	XCore();
+	~XCore();
+	void Xcall(OpcodeProcessor &cpu,uint32_t func);
+	void init(uint32_t args);
+	void unload();		
 };
+
+
+
+
+
 
 
 

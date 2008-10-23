@@ -33,6 +33,58 @@ This file is part of the EPBP project
 </Copyright Header>
 */
 
+#include <xmod.h>
+
+
+
+XCore::XCore(){
+	name_="Core";
+	version_=0x000001;
+	good_=0;
+	privilege_=PLEVEL_ALL;
+}
+
+
+XCore::~XCore(){
+	if(good_==1){
+		unload();
+	}
+}
+
+void XCore::init(uint32_t args){
+	good_=1;
+
+}
+
+
+void XCore::unload(){
+	good_=0;
+}
+
+void XCore::Xcall(OpcodeProcessor &cpu,uint32_t func){
+	switch(func){
+		case 0:
+			cout <<"An XCall Function!! w00t!" << endl;
+		break;
+		
+		
+		
+	default:
+		cerr << "undefined function in xcore: " << func << endl;
+	break;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
