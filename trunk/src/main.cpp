@@ -35,6 +35,7 @@ This file is part of the EPBP project
 #include <string>
 #include <stdint.h>
 #include <epbp.h>
+#include <xmod.h>
 using namespace std;
 
 
@@ -113,10 +114,8 @@ int main(void){
 	cout << "--Shadows EPBP Implementation--" << endl;
 	cout << "--<http://epbp.earlz.biz.tm>---" << endl;
 	cout << "-------------------------------" << endl;	
-	XCore xc;
-	XModule xm(0);
-	test1(xc);
-	test1(xm); //Works!
+	XList xl;
+	xl.load(0,0);
 	
 	cout << endl <<">>>Beginning CPU emulation>>>" <<endl;
 	for(;;){
