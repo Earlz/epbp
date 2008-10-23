@@ -30,40 +30,81 @@
 
 
 
-_OBJS=objs/main.o objs/opcodes.o objs/bcve.o objs/epbp_file.o objs/store_op.o objs/cmp_op.o objs/math_op.o objs/bitwise_op.o objs/float_op.o objs/sys_op.o objs/flow_op.o objs/xmod.o
-debug_CPPFLAGS=-Wall -pedantic -g -I./include
+_OBJS=objs/main.o objs/opcodes.o objs/bcve.o objs/epbp_file.o\
+ objs/store_op.o objs/cmp_op.o objs/math_op.o objs/bitwise_op.o\
+ objs/float_op.o objs/sys_op.o objs/flow_op.o objs/xmod.o
+
+CPPFLAGS=-Wall -pedantic -g -I./include
 #Note: Right now, O3 does work
 
 
 
-default: 
-#build the library
+default: opcodes modules asm system link
+
+test_op.asm:
 	yasm -o bin/test_op.ebc src/test_op.asm
-	g++ $(debug_CPPFLAGS) -c src/main.cpp -o objs/main.o
-	g++ $(debug_CPPFLAGS) -c src/bcve.cpp -o objs/bcve.o
-	g++ $(debug_CPPFLAGS) -c src/opcodes.cpp -o objs/opcodes.o
-	g++ $(debug_CPPFLAGS) -c src/epbp_file.cpp -o objs/epbp_file.o
-	g++ $(debug_CPPFLAGS) -c src/store_op.cpp -o objs/store_op.o
-	g++ $(debug_CPPFLAGS) -c src/cmp_op.cpp -o objs/cmp_op.o
-	g++ $(debug_CPPFLAGS) -c src/math_op.cpp -o objs/math_op.o
-	g++ $(debug_CPPFLAGS) -c src/bitwise_op.cpp -o objs/bitwise_op.o
-	g++ $(debug_CPPFLAGS) -c src/float_op.cpp -o objs/float_op.o
-	g++ $(debug_CPPFLAGS) -c src/sys_op.cpp -o objs/sys_op.o
-	g++ $(debug_CPPFLAGS) -c src/flow_op.cpp -o objs/flow_op.o
-	g++ $(debug_CPPFLAGS) -c src/xmod.cpp -o objs/xmod.o
-	g++ $(debug_CPPFLAGS) -o bin/epbp $(_OBJS)
+
+main.cpp:
+	g++ $(CPPFLAGS) -c src/main.cpp -o objs/main.o
+
+bcve.cpp:
+	g++ $(CPPFLAGS) -c src/bcve.cpp -o objs/bcve.o
+
+opcodes.cpp:
+	g++ $(CPPFLAGS) -c src/opcodes.cpp -o objs/opcodes.o
+
+epbp_file.cpp:
+	g++ $(CPPFLAGS) -c src/epbp_file.cpp -o objs/epbp_file.o
+
+store_op.cpp:
+	g++ $(CPPFLAGS) -c src/store_op.cpp -o objs/store_op.o
+
+cmp_op.cpp:
+	g++ $(CPPFLAGS) -c src/cmp_op.cpp -o objs/cmp_op.o
+
+math_op.cpp:
+	g++ $(CPPFLAGS) -c src/math_op.cpp -o objs/math_op.o
+
+bitwise_op.cpp:
+	g++ $(CPPFLAGS) -c src/bitwise_op.cpp -o objs/bitwise_op.o
+
+float_op.cpp:
+	g++ $(CPPFLAGS) -c src/float_op.cpp -o objs/float_op.o
+
+sys_op.cpp:
+	g++ $(CPPFLAGS) -c src/sys_op.cpp -o objs/sys_op.o
+
+
+flow_op.cpp:
+	g++ $(CPPFLAGS) -c src/flow_op.cpp -o objs/flow_op.o
+
+xmod.cpp:
+	g++ $(CPPFLAGS) -c src/xmod.cpp -o objs/xmod.o
+
+link:
+	g++ $(CPPFLAGS) -o bin/epbp $(_OBJS)
 
 
 clean:
 	rm -f $(_OBJS)
 	
 	
-ebc:
-#build only the EBC file
-	yasm -o bin/test_op.ebc src/test_op.asm
+.PHONY: opcodes modules asm system
+
+#.PHONY does nothing on BSD make? makes GNU make behave more like BSD make..
+	
+opcodes: opcodes.cpp store_op.cpp cmp_op.cpp bitwise_op.cpp float_op.cpp sys_op.cpp flow_op.cpp math_op.cpp
+
+modules: sys_op.cpp xmod.cpp
+
+asm: test_op.asm
+
+system: main.cpp bcve.cpp epbp_file.cpp
 
 
 
+
+#Don't forget to 'make link' !!
 
 
 
