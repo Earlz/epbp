@@ -47,6 +47,8 @@ static const uint32_t CALLSTACK_SIZE=512;
 static const uint32_t EBC_FORMAT_VERSION=0x0002;
 static const uint32_t EPBP_BYTECODE_VERSION=0x0001;
 static const uint32_t EBC_VERSION=(EBC_FORMAT_VERSION <<16) | EPBP_BYTECODE_VERSION;
+static const uint32_t MODULE_LIMIT=2048;
+
 
 
 
@@ -65,6 +67,7 @@ static const uint32_t BAD_COMPARISON=11;
 static const uint32_t DIVIDE_BY_ZERO=12;
 static const uint32_t INVALID_EBC_FILE=13;
 static const uint32_t OUTDATED_IMPLEMENTATION=14;
+static const uint32_t NOT_LOADED_MODULE=15;
 
 
 
@@ -81,6 +84,14 @@ static const uint8_t PLEVEL2=4;
 static const uint8_t PLEVEL3=8;
 static const uint8_t PLEVEL4=16;
 static const uint8_t PLEVEL_IBA=32; 
+
+
+
+
+
+
+
+
 
 class OpcodeProcessor;
 
@@ -277,42 +288,6 @@ bool CompareUnsigned(uint32_t x,uint32_t y, uint8_t compare);
 bool CompareSigned(int32_t x,int32_t y, uint8_t compare);
 bool CompareFloat(float32_t x,float32_t y, uint8_t compare);
 
-class XModule{
-	protected:
-		string name_;
-		uint32_t version_;
-	public:
-	XModule(){
-	}
-	XModule(uint32_t args){
-		name_="<blank>";
-	}
-	~XModule(){}
-	bool good(){return 0;}
-	uint32_t version(){return version_;}
-	uint32_t privledge(){return 0;}
-	string name(){return name_;}
-	void Xcall(OpcodeProcessor cpu,uint32_t func){}
-};
-	
-class XCore : public XModule{
-	public:
-
-
-};
-
-class XList{
-	protected:
-	
-	
-	public:
-	
-	bool load(uint32_t num,uint32_t args);
-	
-	
-	
-	
-};
 
 
 

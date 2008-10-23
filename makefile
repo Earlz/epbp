@@ -36,7 +36,7 @@ debug_CPPFLAGS=-Wall -pedantic -g -I./include
 
 
 
-default:
+default: 
 #build the library
 	yasm -o bin/test_op.ebc src/test_op.asm
 	g++ $(debug_CPPFLAGS) -c src/main.cpp -o objs/main.o
@@ -61,5 +61,13 @@ clean:
 ebc:
 #build only the EBC file
 	yasm -o bin/test_op.ebc src/test_op.asm
+
+
+
+
+
+
+
+
 
 
