@@ -44,13 +44,11 @@ EPBPFile::EPBPFile(char* name){
 	int i=0;
 	EPBP_=header[i];
 	if(EPBP_!=0x50425045){ //hex for 'EPBP'
-		cout <<"i" << hex << EPBP_;
 		EpbpException(INVALID_EBC_FILE);
 	}
 	i++;
 	version=header[i];
 	if(version!=EBC_VERSION){
-		cout << "v";
 		EpbpException(OUTDATED_IMPLEMENTATION);
 	}
 	i++;
@@ -83,12 +81,10 @@ EPBPFile::~EPBPFile(){
 
 void *EPBPFile::LoadCode(){
 	void *tmp;
-	cout <<"!!"<<endl;
 	tmp=new uint8_t[code_size];
 	file.seekg(code_start,ios::beg);
 	file.read((char*)tmp,(int)code_size);
 	cout << hex << *(int*)tmp << endl;
-	cout <<"!!"<<endl;
 	return tmp;
 }
 

@@ -49,7 +49,7 @@ RegisterClass r(&mem);
 FloatRegisterClass rf(&mem);
 OpcodeProcessor cpu(ebc_file.LoadCode(),ebc_file.CodeSize());
 
-
+XList xlist;
 
 
 
@@ -114,12 +114,7 @@ int main(void){
 	cout << "--Shadows EPBP Implementation--" << endl;
 	cout << "--<http://epbp.earlz.biz.tm>---" << endl;
 	cout << "-------------------------------" << endl;	
-	XList xl;
-	xl.load(0,0);
-	xl.call(cpu,0,0);
-	xl.call(cpu,0,2);
-	xl.unload(0);
-	
+
 	cout << endl <<">>>Beginning CPU emulation>>>" <<endl;
 	for(;;){
 		cpu.Cycle();

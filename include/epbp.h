@@ -247,7 +247,9 @@ class OpcodeProcessor{
 	void div_Fr_immd();
 	void mod_Dr_immd();
 	
-	
+	void xload_Dr_Dr();
+	void xcall_Dr_Dr();
+	void xunload_Dr();
 	
 	
 	void push(uint32_t val); //not opcodes, just helpers

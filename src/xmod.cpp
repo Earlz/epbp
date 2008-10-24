@@ -43,7 +43,6 @@ This file is part of the EPBP project
 
 
 bool XList::load(uint32_t num,uint32_t args){
-	
 	switch(num){
 		case XCORE_MODULE:
 			module_xcore.init(args);
