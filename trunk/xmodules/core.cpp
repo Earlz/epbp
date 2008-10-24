@@ -52,6 +52,7 @@ XCore::~XCore(){
 }
 
 void XCore::init(uint32_t args){
+	cout<<"xcore::init()"<<endl;
 	good_=1;
 
 }

@@ -91,6 +91,18 @@ add_Fr_immd 0,0,2
 add_Fr_immd 1,0,2.5
 
 
+mov_Ur_Dimmd 2,0,0
+mov_Ur_Dimmd 3,0,0
+
+xload_Dr_Dr 0,2,0,3
+
+xcall_Dr_Dr 0,2,0,3
+
+xunload_Dr 0,2
+
+
+
+
 dmp
 
 exit

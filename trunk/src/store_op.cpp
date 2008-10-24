@@ -36,10 +36,8 @@ void OpcodeProcessor::mov_Drf_immd(){
 	cl++;
 	//note option bits are filtered out in the r and rf helper classes.
 	if(option_bit(ops[cl])){ //is a displacement
-		cout <<"t";
 		mem.dd[r[ops[cl]]]=to_int(ops[cl+1]);
 	}else{ //is a immediate to float mov
-		cout << "f";
 		rf[ops[cl]]=to_float(ops[cl+1]);
 	}
 	cl+=4;

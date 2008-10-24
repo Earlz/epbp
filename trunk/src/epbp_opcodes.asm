@@ -135,7 +135,48 @@ db %2 | (%1 << 7)
 dd %3
 %endmacro
 
+%macro sub_Fr_immd 3
+db 0xB1
+db %2 | (%1 << 7)
+dd %3
+%endmacro
 
+%macro mul_Fr_immd 3
+db 0xB2
+db %2 | (%1 << 7)
+dd %3
+%endmacro
+
+%macro div_Fr_immd 3
+db 0xB3
+db %2 | (%1 << 7)
+dd %3
+%endmacro
+
+%macro mod_Fr_immd 3
+db 0xB4
+db %2 | (%1 << 7)
+dd %3
+%endmacro
+
+
+
+%macro xload_Dr_Dr 4
+db 0xE8
+db %2 | (%1 << 7)
+db %4 | (%3 << 7)
+%endmacro
+
+%macro xcall_Dr_Dr 4
+db 0xE9
+db %2 | (%1 << 7)
+db %4 | (%3 << 7)
+%endmacro
+
+%macro xunload_Dr 2
+db 0xEA
+db %2 | (%1 << 7)
+%endmacro
 
 
 

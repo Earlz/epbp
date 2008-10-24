@@ -33,8 +33,81 @@ This file is part of the EPBP project
 </Copyright Header>
 */
 
+
+#include <epbp.h>
+#include <xmod.h>
+
 /**This file contains all of the system instructions. Includes machid, 
 xcall, and other such system opcodes**/
+
+
+
+
+void OpcodeProcessor::xload_Dr_Dr(){ //num, arg
+	cl++;
+	switch((option_bit(ops[cl])<<1) | option_bit(ops[cl+1])){
+		case 0: //neither is disp.
+			tr=xlist.load(r[ops[cl]],r[ops[cl+1]]);
+		break;
+		case 1: //only the second is disp.
+			tr=xlist.load(r[ops[cl]],mem.dd[r[ops[cl+1]]]);
+		break;
+		case 2: //only first is disp.
+			tr=xlist.load(mem.dd[r[ops[cl]]],r[ops[cl+1]]);
+		break;
+		case 3: //both are disp.
+			tr=xlist.load(mem.dd[r[ops[cl]]],mem.dd[r[ops[cl+1]]]);
+		break;
+		default:
+			EpbpException(BAD_OPCODE);
+		break;
+	}
+	
+	cl++;
+	
+}
+
+/**!HACK! cpu should be replaced with 'this', but I get errors using 'this'**/
+
+void OpcodeProcessor::xcall_Dr_Dr(){
+	cl++;
+	switch((option_bit(ops[cl])<<1) | option_bit(ops[cl+1])){
+		case 0: //neither is disp.
+			xlist.call(cpu,r[ops[cl]],r[ops[cl+1]]);
+		break;
+		case 1: //only the second is disp.
+			xlist.call(cpu,r[ops[cl]],mem.dd[r[ops[cl+1]]]);
+		break;
+		case 2: //only first is disp.
+			xlist.call(cpu,mem.dd[r[ops[cl]]],r[ops[cl+1]]);
+		break;
+		case 3: //both are disp.
+			xlist.call(cpu,mem.dd[r[ops[cl]]],mem.dd[r[ops[cl+1]]]);
+		break;
+		default:
+			EpbpException(BAD_OPCODE);
+		break;
+	}
+	
+	cl++;
+	
+	
+}
+
+
+void OpcodeProcessor::xunload_Dr(){
+	cl++;
+	if(option_bit(ops[cl])){
+		//is disp
+		xlist.unload(mem.dd[r[ops[cl]]]);
+	}else{
+		xlist.unload(r[ops[cl]]);
+	}
+}
+
+
+
+
 
 
 

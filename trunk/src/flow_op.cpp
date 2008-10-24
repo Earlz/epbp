@@ -50,7 +50,6 @@ void OpcodeProcessor::jmp_immdc(){
 	uint32_t ad=*(uint32_t*)&ops[cl+1];
 	
 	cl=ad;
-	cout << "cl="<<hex<<cl<<endl;
 	cl--; //compensate for the increment at end of Cycle
 }
 	
@@ -75,7 +74,6 @@ void OpcodeProcessor::jif_immdc(){
 
 void OpcodeProcessor::call_immdc(){
 	cl++;
-	//cout <<"t"<<endl;
 	PushCS(cl+4);
 	cl=*(uint32_t*)&ops[cl];
 	cl--;
