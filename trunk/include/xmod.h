@@ -108,6 +108,23 @@ class XList{
 
 
 
+class XArgs{
+	OpcodeProcessor *xcpu;
+	
+	public:
+	XArgs(OpcodeProcessor *this_cpu);
+	~XArgs();
+	uint32_t getstackarg(uint32_t n); //get the nth element from the top of the stack.
+	void putstackarg(uint32_t n,uint32_t val); //change the nth stack element located n-top of stack.
+	uint32_t getcallarg(uint32_t n); //get the nth call stack element off the top of the stack.
+	void putcallarg(uint32_t n,uint32_t val);
+	
+	
+	
+};
+
+
+
 
 
 extern XList xlist;

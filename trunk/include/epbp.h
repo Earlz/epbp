@@ -105,6 +105,12 @@ extern OpcodeProcessor cpu;
 #define to_int(x) \
 	(*(uint32_t*)&x)
 
+#define arg_r(x) \
+	(r[ops[cl+x]])
+#define arg_Dr(x) \
+	(mem.dd(r[ops[cl+x]]))
+#define arg_Fr(x) \
+	(rf[ops[cl+x]])
 
 
 

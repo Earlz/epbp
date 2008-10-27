@@ -35,6 +35,24 @@ This file is part of the EPBP project
 
 #include <xmod.h>
 
+/**Functions:
+init(x) - arguments are not used for this module.
+
+
+0: testing stuff. (unused)
+1: out_error(char *string); this will output the error message in string. If the current device or priveldges do not allow visual output, it may attempt to output things by turning an LED on or a beep or something similar to tell the user an error occured.
+
+2:malloc(int size):(void *free_memory); this will allocate a memory block of 'size' and then place that address in 'free_memory'.
+
+3:free(void *memory): bool error; if all is good, then error will be zero. This frees a block of memory.
+
+4:
+
+
+
+*/
+
+
 
 
 XCore::XCore(){
