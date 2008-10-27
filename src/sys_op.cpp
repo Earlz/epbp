@@ -70,10 +70,14 @@ void OpcodeProcessor::xload_Dr_Dr(){ //num, arg
 /**!HACK! cpu should be replaced with 'this', but I get errors using 'this'**/
 
 void OpcodeProcessor::xcall_Dr_Dr(){
+	PushCS(cl+2);
 	cl++;
+	
 	switch((option_bit(ops[cl])<<1) | option_bit(ops[cl+1])){
 		case 0: //neither is disp.
+
 			xlist.call(cpu,r[ops[cl]],r[ops[cl+1]]);
+
 		break;
 		case 1: //only the second is disp.
 			xlist.call(cpu,r[ops[cl]],mem.dd[r[ops[cl+1]]]);
@@ -82,14 +86,14 @@ void OpcodeProcessor::xcall_Dr_Dr(){
 			xlist.call(cpu,mem.dd[r[ops[cl]]],r[ops[cl+1]]);
 		break;
 		case 3: //both are disp.
-			xlist.call(cpu,mem.dd[r[ops[cl]]],mem.dd[r[ops[cl+1]]]);
+			xlist.call(cpu,mem.dd[r[ops[cl]]],mem.dd[r[ops[cl+1]]]); //need macro for this kinda stuff
 		break;
 		default:
 			EpbpException(BAD_OPCODE);
 		break;
 	}
+	cl=PopCS();
 	
-	cl++;
 	
 	
 }
