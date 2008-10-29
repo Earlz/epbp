@@ -32,7 +32,7 @@
 
 %include "epbp_opcodes.asm" ;include file with opcode definitions
 
-
+%xdefine CRLF 10,13
 
 
 
@@ -92,18 +92,17 @@ add_Fr_immd 1,0,2.5
 
 
 mov_Ur_Dimmd 2,0,0
-mov_Ur_Dimmd 3,0,0
+mov_Ur_Dimmd 3,0,1
+mov_Ur_Dimmd 4,0,(test_str-data_start)
+push_Fr 0,4
 
 xload_Dr_Dr 0,2,0,3
+
+dmp
 
 xcall_Dr_Dr 0,2,0,3
 
 xunload_Dr 0,2
-
-
-
-
-dmp
 
 exit
 
@@ -112,7 +111,8 @@ code_end:
 
 data_start:
 times 256 dd 0 ;initial register area is cleared with 0s
-db "Hello There Mr. Worldgdb."
+test_str: db "**Hello!! This is from the data of the EBC file printed with XCall module 0, function 1!.**",CRLF
+
 data_end:
 
 
