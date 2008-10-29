@@ -79,12 +79,16 @@ class XModule{
 /**Insert module class definitions here**/
 
 class XCore : public XModule{
+	//OpcodeProcessor *c;
 	public:
 	XCore();
 	~XCore();
 	void Xcall(OpcodeProcessor &cpu,uint32_t func);
 	void init(uint32_t args);
-	void unload();		
+	void unload();	
+		
+	private:
+	uint32_t out_error(uint32_t str);
 };
 
 
@@ -107,7 +111,7 @@ class XList{
 };
 
 
-
+/*
 class XArgs{
 	OpcodeProcessor *xcpu;
 	
@@ -122,7 +126,7 @@ class XArgs{
 	
 	
 };
-
+*/
 
 
 

@@ -85,7 +85,10 @@ void XCore::Xcall(OpcodeProcessor &cpu,uint32_t func){
 		case 0:
 			cout <<"An XCall Function!! w00t!" << endl;
 		break;
-		
+		case 1: //out_error
+			cpu.push(out_error(cpu.pop()));
+			
+		break;
 		
 		
 	default:
@@ -94,7 +97,13 @@ void XCore::Xcall(OpcodeProcessor &cpu,uint32_t func){
 	}
 }
 
-
+uint32_t XCore::out_error(uint32_t str){
+	while(mem.db[str]!=0){
+		putc(mem.db[str],stdout);
+		str++;
+	}
+	return 0;
+}
 
 
 

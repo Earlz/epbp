@@ -217,22 +217,24 @@ class OpcodeProcessor{
 	bool tr; //truth register
 	uint32_t sr; //Stack register
 /**	uint16_t sr_size; //stack size **-Depricated**/
-	uint32_t rx[4]; //Xcall register.
+	
 	uint32_t *cs; //The Call Stack.
 	uint32_t csl; //location inside the call stack.
 	uint32_t code_size;
-	protected:
+	public:
 	void PushCS(uint32_t code);
 	uint32_t PopCS();
 	uint32_t PeekCS();
 	uint32_t CheckCodeAddresses(); //This should only be called at initialization to check all call addresses.
-	public:
 	OpcodeProcessor(void *opcode_data,uint32_t code_size,uint32_t flags=0);
 	~OpcodeProcessor();
 	void Cycle();
 	Dump DumpState();
-	void icall(uint32_t address); //equivalent of int, but much more elegant and sophisticated
+//	void icall(uint32_t address); //equivalent of int, but much more elegant and sophisticated
 	
+	void push(uint32_t val); //not opcodes, just helpers
+	uint32_t pop();
+	uint32_t rx[4]; //Xcall register.
 	protected:
 	/**See bottom of file for abreviation information on opcodes**/
 	void mov_Drf_immd();
@@ -258,8 +260,7 @@ class OpcodeProcessor{
 	void xunload_Dr();
 	
 	
-	void push(uint32_t val); //not opcodes, just helpers
-	uint32_t pop();
+	
 	
 };
 
