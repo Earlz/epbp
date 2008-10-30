@@ -152,6 +152,12 @@ void OpcodeProcessor::Cycle(){
 		case 0xEA:
 			xunload_Dr();
 		break;
+		case 0xEB:
+			xerror_Dr();
+		break;
+		case 0xEC:
+			xinfo_Dr_Lr();
+		break;
 		
 		case 0xFF: //this is for debugging: this will dump the first 16 r and rf registers
 			int i;

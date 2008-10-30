@@ -37,7 +37,7 @@ This file is part of the EPBP project
 #include <xmod.h>
 
 
-
+uint32_t xmodule_last_error;
 
 
 
@@ -83,8 +83,22 @@ void XList::unload(uint32_t num){
 	
 }
 
+uint8_t zero_module_info[16];
 
 
+void *XList::info(uint32_t num){
+	switch(num){
+		case XCORE_MODULE:
+			return module_xcore.get_info();
+		break;
+		
+		default:
+			memset(zero_module_info,0,16);
+			return zero_module_info;
+		break;
+	}
+	
+}
 
 
 

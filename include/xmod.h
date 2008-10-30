@@ -46,32 +46,43 @@ This file is part of the EPBP project
 static const uint32_t XCORE_MODULE=0;
 
 
-
-
+extern uint32_t xmodule_last_error;
 
 class XModule{
-	private:
-		bool foo(){return 0;}
 	protected:
 		string name_;
-		uint32_t version_;
+		struct{
+			uint8_t v1,v2,v3;
+			uint32_t priv;
+			uint8_t name[9];
+		}info;
 		bool good_;
-		uint32_t privilege_;
+
+		uint8_t scratch[9];
 	public:
 		XModule(){
 			good_=0;
-			privilege_=0;
-			version_=0;
-			name_="<blank>";
+			info.v1=0;
+			info.v2=0;
+			info.v3=0;
+			info.priv=0;
+			memcpy(info.name,"<blank>",8);
+			xmodule_last_error=1;
 		}
 		~XModule(){}
 		bool good(){return good_;}
-		uint32_t version(){return version_;}
-		uint32_t privilege(){return privilege_;}
-		string name(){return name_;}
+		uint32_t version(){return (info.v1<<16)|(info.v2<<8)|info.v3;}
+		uint32_t privilege(){return info.priv;}
+		
+		uint8_t *name(){
+			memcpy(scratch,info.name,9);
+			return scratch;
+		}
+		
 		void Xcall(OpcodeProcessor &cpu,uint32_t func){} //only should work if init called before-hand.
 		void init(uint32_t args){} //will initalize the module for Xcall use.
 		void unload(){} //should unload any memory currently in use, makes it so Xcall cannot be used. 
+		void *get_info(){return (void*)&info;}
 };
 	
 	
@@ -108,6 +119,7 @@ class XList{
 		bool load(uint32_t num,uint32_t args);
 		void call(OpcodeProcessor &this_cpu,uint32_t num,uint32_t func);
 		void unload(uint32_t num);
+		void *info(uint32_t num);
 };
 
 

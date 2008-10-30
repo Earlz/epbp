@@ -94,13 +94,42 @@ add_Fr_immd 1,0,2.5
 mov_Ur_Dimmd 2,0,0
 mov_Ur_Dimmd 3,0,1
 mov_Ur_Dimmd 4,0,(test_str-data_start)
-push_Fr 0,4
+
 
 xload_Dr_Dr 0,2,0,3
 
+push_Fr 0,4
 dmp
 
 xcall_Dr_Dr 0,2,0,3
+pop_Fr 0,200
+
+mov_Ur_Dimmd 2,0,0
+mov_Ur_Dimmd 3,0,1
+mov_Ur_Dimmd 4,0,(xmod_info_str-data_start)
+push_Fr 0,4
+xcall_Dr_Dr 0,2,0,3
+pop_Fr 0,100
+
+mov_Ur_Dimmd 4,0,(xmod_name_str-data_start)
+push_Fr 0,4
+xcall_Dr_Dr 0,2,0,3 ;"name:"  printed
+pop_Fr 0,100
+
+mov_Ur_Dimmd 4,0,(xmod_space-data_start)
+
+xinfo_Dr_Lr 0,2,0,4
+
+add_Fr_immd 0,4,8 ;move to start of name string
+push_Fr 0,4
+xcall_Dr_Dr 0,2,0,3
+pop_Fr 0,100
+
+mov_Ur_Dimmd 4,0,(line_break-data_start)
+push_Fr 0,4
+xcall_Dr_Dr 0,2,0,3
+pop_Fr 0,100
+
 
 xunload_Dr 0,2
 
@@ -111,7 +140,15 @@ code_end:
 
 data_start:
 times 256 dd 0 ;initial register area is cleared with 0s
-test_str: db "**Hello!! This is from the data of the EBC file printed with XCall module 0, function 1!.**",CRLF
+test_str: db "**Hello!! This is from the data of the EBC file printed with XCall module 0, function 1!.**",CRLF,0
+
+xmod_info_str: db CRLF,CRLF, "**Info on module 0:", CRLF,0
+xmod_name_str: db "**Name: ",0
+
+xmod_space: dd 0,0,0,0 ;16 bytes
+
+
+line_break: db CRLF
 
 data_end:
 

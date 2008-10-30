@@ -258,7 +258,8 @@ class OpcodeProcessor{
 	void xload_Dr_Dr();
 	void xcall_Dr_Dr();
 	void xunload_Dr();
-	
+	void xinfo_Dr_Lr();
+	void xerror_Dr();
 	
 	
 	
