@@ -109,8 +109,33 @@ void OpcodeProcessor::xunload_Dr(){
 	}
 }
 
+void OpcodeProcessor::xinfo_Dr_Lr(){
+	//the L option bit does nothing right now.
+	uint32_t *info;
+	cl++;
+	if(option_bit(ops[cl])){
+		//is disp
+		info=(uint32_t*)xlist.info(mem.dd[r[ops[cl]]]);
+	}else{
+		info=(uint32_t*)xlist.info(r[ops[cl]]);
+	}
+	cl++;
+	for(int i=0;i<4;i++){
+		mem.dd[r[ops[cl]]+(i*4)]=info[i];
+	}
+	
+	
+}
 
-
+void OpcodeProcessor::xerror_Dr(){
+	cl++;
+	if(option_bit(ops[cl])){
+		//is disp
+		mem.dd[r[ops[cl]]]=xmodule_last_error;
+	}else{
+		r[ops[cl]]=xmodule_last_error;
+	}
+}
 
 
 

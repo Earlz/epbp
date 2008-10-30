@@ -178,7 +178,16 @@ db 0xEA
 db %2 | (%1 << 7)
 %endmacro
 
+%macro xinfo_Dr_Lr 4
+db 0xEC
+db %2 | (%1 << 7)
+db %4 | (%3 << 7)
+%endmacro
 
+%macro xerror_Dr 2
+db 0xEB
+db %2 | (%1 << 7)
+%endmacro
 
 
 

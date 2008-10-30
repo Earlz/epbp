@@ -56,10 +56,13 @@ init(x) - arguments are not used for this module.
 
 
 XCore::XCore(){
-	name_="Core";
-	version_=0x000001;
+	info.v1=0;
+	info.v2=0;
+	info.v3=1;
+	info.priv=PLEVEL_ALL;
+	memcpy(info.name,"xcore",6);
 	good_=0;
-	privilege_=PLEVEL_ALL;
+	xmodule_last_error=0;
 }
 
 
