@@ -39,7 +39,7 @@ CPPFLAGS=-static -static-libgcc -Wall -pedantic -g -I./include
 
 
 
-default: opcodes modules asm system link
+default: opcodes modules system link asm
 
 test_op.asm:
 	yasm -o bin/test_op.ebc src/test_op.asm
